@@ -1,0 +1,357 @@
+<!--
+Cookie Banner — GDPR-Compliant Drop-in Widget
+==============================================
+Part of AI Automation System v3 GDPR Toolkit
+
+Usage:
+  Include this snippet in your HTML <body> just before </body>.
+  No external dependencies. Works standalone.
+
+Behavior:
+  - Shows on first visit
+  - Stores choice in cookie 'gdpr-consent' (1 year)
+  - Three categories: necessary (always), functional, analytics, marketing
+  - User can revisit choices anytime via window.showCookieBanner()
+  - Triggers events on choice: 'cookie-consent-saved' with detail = preferences
+
+Brand: Dr.Fone Cyprus / drfone.eu
+Colors: #265092 (blue), #DF111B (red)
+Languages: AR (default RTL) + EN toggle
+-->
+
+<style>
+.gdpr-banner {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1.5px solid #0c1a30;
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+  font-family: 'Cairo', 'Tahoma', sans-serif;
+  z-index: 99999;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+  direction: rtl;
+}
+.gdpr-banner.hidden {
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+}
+.gdpr-banner.expanded { max-width: 560px; }
+
+.gdpr-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.gdpr-cookie-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+.gdpr-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0c1a30;
+  flex: 1;
+}
+.gdpr-lang-toggle {
+  background: none;
+  border: 1px solid #c7bfa9;
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7a91;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.05em;
+}
+.gdpr-lang-toggle:hover { background: #f4f1ea; color: #0c1a30; }
+
+.gdpr-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #2a3958;
+  margin-bottom: 16px;
+}
+.gdpr-text a { color: #265092; font-weight: 600; }
+
+.gdpr-categories {
+  display: none;
+  margin-bottom: 16px;
+  border-top: 1px solid #efe9dd;
+  padding-top: 14px;
+}
+.gdpr-banner.expanded .gdpr-categories { display: block; }
+
+.gdpr-cat {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #efe9dd;
+}
+.gdpr-cat:last-child { border-bottom: 0; }
+.gdpr-cat-info { flex: 1; }
+.gdpr-cat-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0c1a30;
+  margin-bottom: 2px;
+}
+.gdpr-cat-desc { font-size: 12px; color: #6b7a91; line-height: 1.4; }
+
+/* Toggle switch */
+.gdpr-switch {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.gdpr-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.gdpr-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #c7bfa9;
+  border-radius: 20px;
+  transition: background 0.2s;
+}
+.gdpr-switch-slider::before {
+  content: '';
+  position: absolute;
+  height: 14px;
+  width: 14px;
+  right: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.gdpr-switch input:checked + .gdpr-switch-slider { background: #265092; }
+.gdpr-switch input:checked + .gdpr-switch-slider::before { transform: translateX(-16px); }
+.gdpr-switch input:disabled + .gdpr-switch-slider {
+  background: #1a7a3e;
+  cursor: not-allowed;
+}
+
+.gdpr-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.gdpr-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 11px 18px;
+  border-radius: 100px;
+  border: 0;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.gdpr-btn-primary {
+  background: #0c1a30;
+  color: #faf7f2;
+}
+.gdpr-btn-primary:hover { background: #DF111B; }
+.gdpr-btn-secondary {
+  background: transparent;
+  color: #0c1a30;
+  border: 1px solid #c7bfa9;
+}
+.gdpr-btn-secondary:hover { background: #f4f1ea; border-color: #0c1a30; }
+.gdpr-btn-text {
+  background: transparent;
+  color: #6b7a91;
+  font-size: 12px;
+  text-decoration: underline;
+  flex-basis: 100%;
+  text-align: center;
+  margin-top: 6px;
+  padding: 4px;
+}
+
+[dir="ltr"].gdpr-banner { direction: ltr; }
+[dir="ltr"] .gdpr-switch-slider::before { right: auto; left: 3px; }
+[dir="ltr"] .gdpr-switch input:checked + .gdpr-switch-slider::before { transform: translateX(16px); }
+
+@media (max-width: 480px) {
+  .gdpr-banner { left: 8px; right: 8px; bottom: 8px; padding: 16px; }
+  .gdpr-actions { flex-direction: column; }
+}
+</style>
+
+<div id="gdprBanner" class="gdpr-banner hidden" dir="rtl" role="dialog" aria-labelledby="gdprTitle">
+  <div class="gdpr-header">
+    <span class="gdpr-cookie-icon">🍪</span>
+    <h3 class="gdpr-title" id="gdprTitle" data-ar="نحترم خصوصيتك" data-en="We respect your privacy">نحترم خصوصيتك</h3>
+    <button class="gdpr-lang-toggle" onclick="gdprToggleLang()">EN</button>
+  </div>
+  <p class="gdpr-text" data-ar="نستخدم cookies لتحسين تجربتك. الـ cookies الضرورية فقط تعمل تلقائياً. يمكنك تخصيص باقي الفئات حسب راحتك. <a href='/privacy-policy' target='_blank'>اقرأ سياسة الخصوصية</a>"
+                       data-en="We use cookies to improve your experience. Only strictly necessary cookies run automatically. You can customize other categories. <a href='/privacy-policy' target='_blank'>Read our Privacy Policy</a>">
+    نستخدم cookies لتحسين تجربتك. الـ cookies الضرورية فقط تعمل تلقائياً. يمكنك تخصيص باقي الفئات حسب راحتك. <a href='/privacy-policy' target='_blank'>اقرأ سياسة الخصوصية</a>
+  </p>
+
+  <div class="gdpr-categories">
+    <div class="gdpr-cat">
+      <label class="gdpr-switch">
+        <input type="checkbox" id="catNecessary" checked disabled>
+        <span class="gdpr-switch-slider"></span>
+      </label>
+      <div class="gdpr-cat-info">
+        <div class="gdpr-cat-name" data-ar="ضرورية (دائماً مفعّلة)" data-en="Strictly Necessary (always on)">ضرورية (دائماً مفعّلة)</div>
+        <div class="gdpr-cat-desc" data-ar="مطلوبة لتشغيل الموقع — تسجيل دخول، عربة تسوّق، أمان."
+                                    data-en="Required for the site to work — login, cart, security.">
+          مطلوبة لتشغيل الموقع — تسجيل دخول، عربة تسوّق، أمان.
+        </div>
+      </div>
+    </div>
+
+    <div class="gdpr-cat">
+      <label class="gdpr-switch">
+        <input type="checkbox" id="catFunctional" checked>
+        <span class="gdpr-switch-slider"></span>
+      </label>
+      <div class="gdpr-cat-info">
+        <div class="gdpr-cat-name" data-ar="وظيفية" data-en="Functional">وظيفية</div>
+        <div class="gdpr-cat-desc" data-ar="تذكّر تفضيلاتك (اللغة، الـ RTL، إلخ). موصى بها."
+                                    data-en="Remember your preferences (language, RTL/LTR, etc). Recommended.">
+          تذكّر تفضيلاتك (اللغة، الـ RTL، إلخ). موصى بها.
+        </div>
+      </div>
+    </div>
+
+    <div class="gdpr-cat">
+      <label class="gdpr-switch">
+        <input type="checkbox" id="catAnalytics">
+        <span class="gdpr-switch-slider"></span>
+      </label>
+      <div class="gdpr-cat-info">
+        <div class="gdpr-cat-name" data-ar="تحليلات (Analytics)" data-en="Analytics">تحليلات (Analytics)</div>
+        <div class="gdpr-cat-desc" data-ar="نتعلم كيف تستخدم الموقع لتحسينه. تحليلات محترمة للخصوصية، بدون fingerprinting."
+                                    data-en="We learn how you use the site to improve it. Privacy-respecting, no fingerprinting.">
+          نتعلم كيف تستخدم الموقع لتحسينه. تحليلات محترمة للخصوصية، بدون fingerprinting.
+        </div>
+      </div>
+    </div>
+
+    <div class="gdpr-cat">
+      <label class="gdpr-switch">
+        <input type="checkbox" id="catMarketing">
+        <span class="gdpr-switch-slider"></span>
+      </label>
+      <div class="gdpr-cat-info">
+        <div class="gdpr-cat-name" data-ar="تسويق" data-en="Marketing">تسويق</div>
+        <div class="gdpr-cat-desc" data-ar="تتبّع للحملات الإعلانية. تساعدنا نوصل لك عروض أنسب."
+                                    data-en="Tracks ad campaigns. Helps us show you more relevant offers.">
+          تتبّع للحملات الإعلانية. تساعدنا نوصل لك عروض أنسب.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gdpr-actions">
+    <button class="gdpr-btn gdpr-btn-primary" onclick="gdprAcceptAll()" data-ar="قبول الكل" data-en="Accept All">قبول الكل</button>
+    <button class="gdpr-btn gdpr-btn-secondary" onclick="gdprAcceptNecessary()" data-ar="الضرورية فقط" data-en="Necessary Only">الضرورية فقط</button>
+    <button class="gdpr-btn gdpr-btn-text" onclick="gdprToggleExpand()" data-ar="تخصيص الإختيارات →" data-en="Customize choices →">تخصيص الإختيارات →</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  const COOKIE_NAME = 'gdpr-consent';
+  const COOKIE_DAYS = 365;
+  const banner = document.getElementById('gdprBanner');
+  let currentLang = 'ar';
+
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+  }
+
+  function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + days * 86400000);
+    document.cookie = name + '=' + encodeURIComponent(value) +
+                      ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  function show() {
+    banner.classList.remove('hidden');
+  }
+
+  function hide() {
+    banner.classList.add('hidden');
+    banner.classList.remove('expanded');
+  }
+
+  function savePrefs(prefs) {
+    setCookie(COOKIE_NAME, JSON.stringify({ ...prefs, ts: Date.now() }), COOKIE_DAYS);
+    window.dispatchEvent(new CustomEvent('cookie-consent-saved', { detail: prefs }));
+    hide();
+  }
+
+  window.gdprAcceptAll = function() {
+    savePrefs({ necessary: true, functional: true, analytics: true, marketing: true });
+  };
+
+  window.gdprAcceptNecessary = function() {
+    savePrefs({ necessary: true, functional: false, analytics: false, marketing: false });
+  };
+
+  window.gdprSaveCustom = function() {
+    savePrefs({
+      necessary: true,
+      functional: document.getElementById('catFunctional').checked,
+      analytics: document.getElementById('catAnalytics').checked,
+      marketing: document.getElementById('catMarketing').checked,
+    });
+  };
+
+  window.gdprToggleExpand = function() {
+    if (banner.classList.contains('expanded')) {
+      window.gdprSaveCustom();
+    } else {
+      banner.classList.add('expanded');
+      // Change the text-button to "Save my choices"
+      const btn = banner.querySelector('.gdpr-btn-text');
+      btn.textContent = currentLang === 'ar' ? 'حفظ اختياراتي' : 'Save my choices';
+    }
+  };
+
+  window.gdprToggleLang = function() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    banner.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    banner.querySelectorAll('[data-ar]').forEach(el => {
+      el.innerHTML = el.dataset[currentLang];
+    });
+    banner.querySelector('.gdpr-lang-toggle').textContent = currentLang === 'ar' ? 'EN' : 'AR';
+  };
+
+  window.showCookieBanner = function() { show(); };
+
+  window.getCookieConsent = function() {
+    const c = getCookie(COOKIE_NAME);
+    return c ? JSON.parse(c) : null;
+  };
+
+  // Show on first visit
+  if (!getCookie(COOKIE_NAME)) {
+    setTimeout(show, 800);
+  }
+})();
+</script>

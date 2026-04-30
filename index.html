@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Automation System v3.1 Side Demo</title>
+  <style>
+    :root{
+      --bg:#f6f2ea;--paper:#fff;--ink:#102033;--muted:#667386;--line:#ddd4c4;
+      --blue:#265092;--red:#df111b;--green:#167448;--orange:#c75f16;--soft:#edf2fb;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.75}
+    .shell{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+    aside{background:#111d2e;color:#fff;padding:22px;border-left:1px solid #2d3c52;position:sticky;top:0;height:100vh;overflow:auto}
+    .brand{border-bottom:1px solid #33465f;padding-bottom:18px;margin-bottom:14px}
+    .brand b{font-size:23px}.brand small{display:block;color:#b8c4d5;margin-top:8px;line-height:1.6}
+    .nav{display:block;color:#dbe7f8;text-decoration:none;padding:11px 12px;border-radius:8px;margin:6px 0}
+    .nav:hover,.nav.active{background:#204a80;color:#fff}
+    main{padding:26px;max-width:1280px;width:100%;margin:0 auto}
+    .hero,.card,.tablebox,.panel{background:var(--paper);border:1px solid var(--line);border-radius:8px}
+    .hero{padding:28px;margin-bottom:16px}.eyebrow{color:var(--red);font-weight:900;font-size:13px;margin-bottom:8px}
+    h1{margin:0;font-size:34px;line-height:1.25}h2{margin:0 0 12px;font-size:22px}h3{margin:0 0 8px;font-size:17px}
+    .sub{color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0}
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}.card{padding:18px}
+    .value{font-size:29px;font-weight:900;margin:6px 0}.green{color:var(--green)}.blue{color:var(--blue)}.orange{color:var(--orange)}.red{color:var(--red)}
+    .badge{display:inline-block;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:900}
+    .ok{background:#e5f4ed;color:var(--green)}.warn{background:#fff0df;color:var(--orange)}.risk{background:#fde7e9;color:var(--red)}.info{background:#e5eefb;color:var(--blue)}
+    .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+    a.tile{display:block;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:18px;text-decoration:none;color:var(--ink)}
+    a.tile:hover{border-color:var(--blue);box-shadow:0 8px 22px rgba(38,80,146,.13)}a.tile b{display:block;color:var(--blue);font-size:18px;margin-bottom:8px}
+    table{width:100%;border-collapse:collapse}th,td{padding:11px 13px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+    th{background:#eef2f8;color:#263b59;font-size:13px}.tablebox{overflow:auto;margin:16px 0}.tablebox h2{padding:16px 16px 0}
+    .timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px;min-height:145px}.step b{display:block;color:var(--blue);margin-bottom:8px}
+    .compare{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{padding:18px}.panel ul{margin:10px 0 0;padding-right:20px}
+    iframe{width:100%;height:620px;border:1px solid var(--line);border-radius:8px;background:#fff}
+    section{scroll-margin-top:20px}
+    @media(max-width:1000px){.shell{grid-template-columns:1fr}aside{position:relative;height:auto}.grid,.tiles,.timeline,.compare,.grid2{grid-template-columns:1fr 1fr}}
+    @media(max-width:650px){main{padding:14px}.grid,.tiles,.timeline,.compare,.grid2{grid-template-columns:1fr}h1{font-size:27px}iframe{height:520px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">
+        <b>AI Automation v3.1</b>
+        <small>نسخة جانبية مستقلة للمراجعة. لا تغيّر النسخة القديمة ولا فرع testing الأصلي.</small>
+      </div>
+      <a class="nav active" href="#overview">نظرة عامة</a>
+      <a class="nav" href="#decision">قرار المقارنة</a>
+      <a class="nav" href="#launch">ماذا نفتح أولًا؟</a>
+      <a class="nav" href="#work">خطة العمل</a>
+      <a class="nav" href="#risk">المخاطر</a>
+      <a class="nav" href="#preview">Preview مدمج</a>
+    </aside>
+
+    <main>
+      <section class="hero" id="overview">
+        <div class="eyebrow">Side Demo - Testing version 3.1</div>
+        <h1>نسخة جانبية لقرار: هل نكمل على v3 أو نرجع للنسخة القديمة؟</h1>
+        <p class="sub">هذه الصفحة تجمع النسخة الكبيرة بطريقة أوضح: ماذا فيها، أين قوتها، ما الذي يحتاج تعديل، وكيف نجربها بدون المخاطرة بالنسخة القديمة.</p>
+      </section>
+
+      <section class="grid">
+        <div class="card"><div class="sub">الوضع</div><div class="value blue">Side</div><p class="sub">فرع وPreview مستقلان.</p></div>
+        <div class="card"><div class="sub">Security Scan</div><div class="value green">Passed</div><p class="sub">لم تظهر مفاتيح حقيقية في النصوص.</p></div>
+        <div class="card"><div class="sub">Production</div><div class="value orange">Not Yet</div><p class="sub">تحتاج Redis approval وtests.</p></div>
+        <div class="card"><div class="sub">Pilot</div><div class="value red">Dr.Fone</div><p class="sub">نبدأ داخليًا فقط.</p></div>
+      </section>
+
+      <section class="compare" id="decision">
+        <div class="panel">
+          <h2>لماذا v3.1 مهمة؟</h2>
+          <ul>
+            <li>أشمل من النسخة السابقة: فيها architecture، GDPR، MCP، n8n، pricing، وcost governance.</li>
+            <li>تعتمد على plugins موجودة بدل بناء POS وRepair من الصفر.</li>
+            <li>تصلح كمرجع إنتاجي طويل المدى.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>لماذا لا نعتمدها مباشرة؟</h2>
+          <ul>
+            <li>كبيرة جدًا وتحتاج ترتيب قبل التنفيذ.</li>
+            <li>MCP wrappers فيها confirm token غير مكتمل.</li>
+            <li>n8n وWhatsApp يحتاجان موافقات وتجربة آمنة.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="tiles" id="launch">
+        <a class="tile" href="D5_Demo_Landing_Page.html"><b>D5 - صفحة المبيعات</b><span class="sub">أفضل صفحة تعرض الخدمة للزبائن المحتملين مع pricing وWhatsApp CTA.</span></a>
+        <a class="tile" href="D2_Stack_Architecture_Map.html"><b>D2 - الخريطة التقنية</b><span class="sub">تشرح 9 layers وكيف يرتبط WooCommerce وOpenPOS وRepairBuddy.</span></a>
+        <a class="tile" href="D10_Cost_Tracking_Dashboard.html"><b>D10 - مراقبة التكلفة</b><span class="sub">Owner dashboard لمصاريف AI والـ circuit breaker.</span></a>
+        <a class="tile" href="TESTING_V3_1_SCAN_REPORT_AR.md"><b>Security Scan</b><span class="sub">تقرير فحص النسخة قبل الرفع.</span></a>
+        <a class="tile" href="Privacy_Policy.md"><b>Privacy / GDPR</b><span class="sub">سياسة خصوصية ثنائية اللغة للمرحلة القادمة.</span></a>
+        <a class="tile" href="cookie_banner.html"><b>Cookie Banner</b><span class="sub">Widget جاهز للعرض والتعديل.</span></a>
+      </section>
+
+      <section class="tablebox" id="work">
+        <h2>خطة تعديل النسخة الجانبية</h2>
+        <table>
+          <thead><tr><th>الترتيب</th><th>التعديل</th><th>السبب</th><th>القرار المقترح</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>توحيد صفحة الدخول side demo</td><td>حتى لا تضيع بين ملفات كثيرة.</td><td><span class="badge ok">تم الآن</span></td></tr>
+            <tr><td>2</td><td>إبقاء D5/D2/D10 كما هي</td><td>فيها شغل جيد ولا نريد حذفه.</td><td><span class="badge ok">محفوظة</span></td></tr>
+            <tr><td>3</td><td>إضافة repairbuddy bridge لاحقًا</td><td>شرط لتجربة الصيانة الحقيقية.</td><td><span class="badge warn">الخطوة التالية</span></td></tr>
+            <tr><td>4</td><td>Redis confirm_token</td><td>شرط لأي تعديل سعر/مخزون أو إرسال WhatsApp.</td><td><span class="badge warn">قبل production</span></td></tr>
+            <tr><td>5</td><td>تجربة n8n low stock فقط</td><td>أقل مخاطرة وأوضح فائدة.</td><td><span class="badge info">Pilot</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="risk">
+        <div class="timeline">
+          <div class="step"><b>W0</b><span class="sub">مراجعة النسخة، security scan، وتثبيت الملفات النظيفة.</span></div>
+          <div class="step"><b>W1</b><span class="sub">Dr.Fone staging وربط WooCommerce read-only.</span></div>
+          <div class="step"><b>W2</b><span class="sub">RepairBuddy bridge + OpenPOS daily close read-only.</span></div>
+          <div class="step"><b>W3</b><span class="sub">n8n low stock وdaily close مع إشعار داخلي فقط.</span></div>
+          <div class="step"><b>W4</b><span class="sub">Approval flow قبل أي T3 write أو WhatsApp send.</span></div>
+        </div>
+      </section>
+
+      <section class="tablebox">
+        <h2>قرار سريع للمكتب</h2>
+        <table>
+          <thead><tr><th>الخيار</th><th>متى نختاره؟</th><th>ملاحظتي</th></tr></thead>
+          <tbody>
+            <tr><td>نرجع للنسخة القديمة</td><td>إذا بدنا demo أخف وأسرع للشرح.</td><td>مناسب للعرض السريع، لكنه أقل إنتاجية.</td></tr>
+            <tr><td>نكمل على v3.1</td><td>إذا بدنا مشروع شامل وقابل للتحول لإنتاج.</td><td>أفضل على المدى المتوسط، بشرط ننفذه بالتدريج.</td></tr>
+            <tr><td>نمزج الاثنين</td><td>إذا بدنا واجهة سهلة + قوة v3.</td><td><span class="badge ok">هذا أفضل خيار عندي</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="preview">
+        <div class="hero">
+          <div class="eyebrow">Embedded preview</div>
+          <h2>D5 Landing Page داخل النسخة الجانبية</h2>
+          <p class="sub">هذه معاينة سريعة. افتح الصفحة الكاملة من الرابط أعلاه إذا أردت مشاهدة كل التفاصيل.</p>
+        </div>
+        <iframe src="D5_Demo_Landing_Page.html" title="D5 Demo Landing Page"></iframe>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

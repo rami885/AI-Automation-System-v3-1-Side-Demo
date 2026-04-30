@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Automation System — أتمتة ذكية للأعمال الصغيرة في قبرص</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #265092;
+  --blue-deep: #1a3a6c;
+  --blue-glow: #5b88c9;
+  --red: #DF111B;
+  --red-deep: #b00d15;
+  --white: #ffffff;
+  --cream: #faf7f2;
+  --sand: #efe9dd;
+  --ink: #0c1a30;
+  --ink-soft: #2a3958;
+  --gray: #6b7a91;
+  --line: #e2dccd;
+  --gold: #c89a4a;
+  --green: #1a7a3e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ============== NAVIGATION ============== */
+.nav {
+  position: sticky;
+  top: 0;
+  background: rgba(250, 247, 242, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+  z-index: 100;
+  padding: 16px 32px;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--blue);
+  position: relative;
+  border-radius: 4px;
+}
+.logo-mark::before, .logo-mark::after {
+  content: '';
+  position: absolute;
+  background: var(--cream);
+}
+.logo-mark::before {
+  top: 50%;
+  left: 5px;
+  right: 5px;
+  height: 2px;
+  transform: translateY(-50%);
+}
+.logo-mark::after {
+  left: 50%;
+  top: 5px;
+  bottom: 5px;
+  width: 2px;
+  transform: translateX(-50%);
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.nav-links a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--blue); }
+.nav-cta {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 10px 22px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.nav-cta:hover { background: var(--red); transform: translateY(-1px); }
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+}
+
+/* ============== HERO ============== */
+.hero {
+  position: relative;
+  padding: 80px 32px 100px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 800px 600px at 90% -10%, rgba(38,80,146,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 600px 400px at 10% 110%, rgba(223,17,27,0.05) 0%, transparent 60%);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(12,26,48,0.03) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(12,26,48,0.03) 40px);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 28px;
+}
+.hero-tag-dot {
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  position: relative;
+}
+.hero-tag-dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: var(--green);
+  opacity: 0.3;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.5); opacity: 0; }
+}
+
+.hero-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(42px, 6.5vw, 88px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  max-width: 1100px;
+  margin-bottom: 32px;
+}
+.hero-title .accent {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-glow) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+.hero-title .underline {
+  position: relative;
+  display: inline-block;
+}
+.hero-title .underline::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  right: 0;
+  left: 0;
+  height: 12px;
+  background: var(--red);
+  z-index: -1;
+  opacity: 0.3;
+}
+
+.hero-sub {
+  font-size: clamp(17px, 2vw, 22px);
+  color: var(--ink-soft);
+  max-width: 720px;
+  margin-bottom: 40px;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 56px;
+  flex-wrap: wrap;
+}
+.btn {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 16px 32px;
+  border-radius: 100px;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--cream);
+}
+.btn-primary:hover {
+  background: var(--red);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(223,17,27,0.25);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+}
+.btn-secondary:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+.btn .arrow { font-size: 20px; }
+
+/* Hero stats */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-num {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.stat-num .small { font-size: 28px; }
+.stat-label {
+  font-size: 14px;
+  color: var(--gray);
+  font-weight: 500;
+}
+
+/* ============== PAIN POINTS ============== */
+.section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 100px 32px;
+}
+.section-tag {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 20px;
+}
+.section-title {
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 24px;
+  max-width: 900px;
+}
+.section-sub {
+  font-size: clamp(16px, 1.5vw, 19px);
+  color: var(--ink-soft);
+  max-width: 700px;
+  margin-bottom: 60px;
+  line-height: 1.6;
+}
+
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.pain-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 36px 32px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.pain-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--ink);
+  box-shadow: 0 20px 40px rgba(12,26,48,0.08);
+}
+.pain-card::before {
+  content: attr(data-num);
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.1em;
+}
+.pain-emoji {
+  font-size: 40px;
+  margin-bottom: 24px;
+  display: block;
+}
+.pain-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.pain-desc {
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+/* ============== SOLUTION ============== */
+.solution {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 120px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.solution::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--blue) 0%, transparent 60%);
+  opacity: 0.4;
+}
+.solution::after {
+  content: '';
+  position: absolute;
+  bottom: -300px; left: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, var(--red) 0%, transparent 60%);
+  opacity: 0.15;
+}
+.solution-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.solution .section-tag { color: #ff6b73; }
+.solution .section-title { color: var(--cream); }
+.solution .section-sub { color: rgba(250,247,242,0.7); }
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+.module {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 32px 28px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.module:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.25);
+  transform: translateY(-4px);
+}
+.module-num {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue-glow);
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+.module-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--cream);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.module-desc {
+  font-size: 14px;
+  color: rgba(250,247,242,0.7);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.module-list {
+  list-style: none;
+  font-size: 13px;
+  color: rgba(250,247,242,0.85);
+}
+.module-list li {
+  padding: 6px 0;
+  padding-right: 22px;
+  position: relative;
+}
+.module-list li::before {
+  content: '✓';
+  position: absolute;
+  right: 0;
+  color: var(--blue-glow);
+  font-weight: 700;
+}
+
+/* ============== PRICING ============== */
+.pricing {
+  background: var(--cream);
+  padding: 100px 32px;
+}
+.pricing-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 60px;
+}
+.tier {
+  background: var(--white);
+  border: 2px solid var(--line);
+  border-radius: 24px;
+  padding: 40px 32px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.tier.featured {
+  border-color: var(--blue);
+  background: linear-gradient(180deg, #f5f8ff 0%, var(--white) 100%);
+  transform: scale(1.04);
+  box-shadow: 0 24px 48px rgba(38,80,146,0.12);
+}
+.tier.featured::before {
+  content: 'الأكثر طلباً';
+  position: absolute;
+  top: -14px;
+  right: 24px;
+  background: var(--red);
+  color: var(--white);
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.tier-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.tier-tag {
+  font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 24px;
+}
+.tier-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.tier-price-num {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 56px;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.tier-price-curr {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.tier-price-period {
+  font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 24px;
+}
+.tier-setup {
+  background: var(--sand);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tier-setup-label { font-weight: 600; }
+.tier-setup-amount { font-weight: 800; color: var(--ink); }
+.tier-features {
+  list-style: none;
+  margin-bottom: 32px;
+  min-height: 240px;
+}
+.tier-features li {
+  padding: 10px 0;
+  padding-right: 28px;
+  position: relative;
+  font-size: 14px;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line);
+}
+.tier-features li:last-child { border-bottom: 0; }
+.tier-features li::before {
+  content: '✓';
+  position: absolute;
+  right: 0;
+  color: var(--blue);
+  font-weight: 800;
+  font-size: 16px;
+}
+.tier-cta {
+  width: 100%;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 14px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 15px;
+  border: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+}
+.tier-cta:hover { background: var(--red); }
+.tier.featured .tier-cta { background: var(--red); }
+.tier.featured .tier-cta:hover { background: var(--red-deep); }
+
+/* ============== HOW IT WORKS ============== */
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 32px;
+  margin-top: 60px;
+  position: relative;
+}
+.step {
+  text-align: right;
+}
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.step-num::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  background: var(--red);
+  border-radius: 4px;
+  z-index: -1;
+}
+.step-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.step-desc {
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.step-week {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.1em;
+  margin-top: 12px;
+}
+
+/* ============== FAQ ============== */
+.faq {
+  background: var(--sand);
+  padding: 100px 32px;
+}
+.faq-inner {
+  max-width: 880px;
+  margin: 0 auto;
+}
+.faq-list {
+  margin-top: 40px;
+}
+.faq-item {
+  border-bottom: 1px solid var(--line);
+  padding: 24px 0;
+  cursor: pointer;
+  transition: padding 0.2s ease;
+}
+.faq-item:first-child { border-top: 1px solid var(--line); }
+.faq-q {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.faq-q-icon {
+  width: 28px; height: 28px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+.faq-item.open .faq-q-icon {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+  transform: rotate(45deg);
+}
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, margin 0.3s ease;
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+.faq-item.open .faq-a {
+  max-height: 400px;
+  margin-top: 16px;
+}
+
+/* ============== CTA FINAL ============== */
+.cta-final {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 100px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-final::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(38,80,146,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 50%, rgba(223,17,27,0.2) 0%, transparent 50%);
+}
+.cta-final-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.cta-final h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  margin-bottom: 24px;
+}
+.cta-final p {
+  font-size: 18px;
+  color: rgba(250,247,242,0.7);
+  margin-bottom: 40px;
+}
+.cta-final .btn-primary {
+  background: var(--red);
+  font-size: 18px;
+  padding: 20px 44px;
+}
+.cta-final .btn-primary:hover { background: var(--white); color: var(--ink); }
+
+/* ============== FOOTER ============== */
+.footer {
+  background: var(--ink);
+  color: rgba(250,247,242,0.6);
+  padding: 60px 32px 32px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.footer-col h4 {
+  color: var(--cream);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { padding: 6px 0; font-size: 14px; }
+.footer-col a { color: inherit; text-decoration: none; }
+.footer-col a:hover { color: var(--cream); }
+.footer-brand {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--cream);
+  margin-bottom: 12px;
+}
+.footer-tagline {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  max-width: 320px;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .hero { padding: 48px 20px 60px; }
+  .section { padding: 60px 20px; }
+  .solution, .pricing, .faq, .cta-final { padding: 60px 20px; }
+  .tier.featured { transform: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== NAVIGATION ====== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <span class="logo-mark"></span>
+      AI Automation
+    </a>
+    <div class="nav-links">
+      <a href="#problems">المشاكل</a>
+      <a href="#solution">الحل</a>
+      <a href="#how">كيف يعمل</a>
+      <a href="#pricing">الأسعار</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#contact" class="nav-cta">احجز عرضاً تجريبياً</a>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <span class="hero-tag-dot"></span>
+      مبني في قبرص · تم اختباره على أعمال حقيقية
+    </div>
+
+    <h1 class="hero-title">
+      أتمتة لـ <span class="accent">المحلات</span><br>
+      المطاعم<br>
+      <span class="underline">والإيجارات</span>
+    </h1>
+
+    <p class="hero-sub">
+      نظام ذكي يحوّل الفوضى اليومية — الفواتير، التذاكر، تنبيهات المخزون، رسائل الزبائن — إلى عمل مؤتمت بالكامل. مبني على Claude AI + WordPress + WhatsApp Business، ومتكامل مع الأنظمة الموجودة عندك.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">
+        احجز Demo مجاني
+        <span class="arrow">←</span>
+      </a>
+      <a href="#how" class="btn btn-secondary">
+        شاهد كيف يعمل
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">9<span class="small">طبقة</span></div>
+        <div class="stat-label">معمارية مدروسة</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">5<span class="small">وكلاء</span></div>
+        <div class="stat-label">AI متخصصة</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">15<span class="small">MCP</span></div>
+        <div class="stat-label">تكامل جاهز</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">24h</div>
+        <div class="stat-label">تدور بدون توقف</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== PAIN POINTS ====== -->
+<section class="section" id="problems">
+  <div class="section-tag">المشاكل</div>
+  <h2 class="section-title">يومك مليان بمهام بسيطة لكن تأكل وقتك</h2>
+  <p class="section-sub">
+    إدارة محل أو شركة إيجار في قبرص اليوم تعني التنقّل بين WhatsApp وExcel وWooCommerce وفواتير VAT وتذاكر صيانة. نحن نعرف هذا — لأنّنا نعيشه.
+  </p>
+
+  <div class="pain-grid">
+    <div class="pain-card" data-num="01">
+      <span class="pain-emoji">📱</span>
+      <h3 class="pain-title">رسائل WhatsApp بلا توقف</h3>
+      <p class="pain-desc">"السعر؟" "متوفر؟" "متى يجاهز؟" — نفس الأسئلة طول النهار. لكنك تخاف تتجاهلها لأنها زبائن.</p>
+    </div>
+    <div class="pain-card" data-num="02">
+      <span class="pain-emoji">📊</span>
+      <h3 class="pain-title">Excel فيه أخطاء صامتة</h3>
+      <p class="pain-desc">حساب utility split بين المستأجرين، VAT، الأرباح — كلها معلّقة على formulas قديمة قد تكون خطأ من شهور.</p>
+    </div>
+    <div class="pain-card" data-num="03">
+      <span class="pain-emoji">⏰</span>
+      <h3 class="pain-title">التنبيهات تجي متأخرة</h3>
+      <p class="pain-desc">تكتشف مخزون iPhone خلص بعد ما يطلب زبون. تكتشف عقد منتهي بعد ما يدفع المستأجر شهر زيادة.</p>
+    </div>
+    <div class="pain-card" data-num="04">
+      <span class="pain-emoji">🔁</span>
+      <h3 class="pain-title">نفس العمل يتكرر</h3>
+      <p class="pain-desc">كل صباح: راجع المبيعات، أكتب تقرير يومي، ابعث تذكير للمتأخرين، حدّث المخزون. ساعة كاملة قبل ما تبدأ الشغل الفعلي.</p>
+    </div>
+    <div class="pain-card" data-num="05">
+      <span class="pain-emoji">💸</span>
+      <h3 class="pain-title">الموظف الجديد يكلّفك شهور تدريب</h3>
+      <p class="pain-desc">كل واحد يدخل لازم يتعلم النظام، الأسعار، الموردين، الـ B2B tiers. ثم يفلّ، ويبدأ الدور من جديد.</p>
+    </div>
+    <div class="pain-card" data-num="06">
+      <span class="pain-emoji">🌙</span>
+      <h3 class="pain-title">الأعمال تنام، الزبائن لا</h3>
+      <p class="pain-desc">في الساعة 10 ليلاً يجي زبون يسأل عن منتج. لو ما رديت، طار للمنافس. ولو رديت، خسرت وقتك العائلي.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SOLUTION ====== -->
+<section class="solution" id="solution">
+  <div class="solution-inner">
+    <div class="section-tag">الحل</div>
+    <h2 class="section-title">نظام واحد. خمس وكلاء. عمل ذكي 24/7.</h2>
+    <p class="section-sub">
+      AI Automation System هو إطار عمل modular يضع خمسة وكلاء AI متخصصين على رأس الأنظمة الموجودة عندك (WooCommerce، WhatsApp، POS). كل وكيل مسؤول عن مجال محدد، يعمل تحت إشراف orchestrator مركزي يضمن السلامة والتكلفة.
+    </p>
+
+    <div class="modules-grid">
+      <div class="module">
+        <div class="module-num">AGENT 01</div>
+        <h3 class="module-title">Shop Agent</h3>
+        <p class="module-desc">يدير المخزون، الأسعار، والموردين. ينبّهك قبل نفاد المخزون بأسبوعين.</p>
+        <ul class="module-list">
+          <li>تحديث أسعار مع موافقتك</li>
+          <li>تنبيهات المخزون التلقائية</li>
+          <li>مراقبة أسعار المنافسين</li>
+          <li>إدارة B2B pricing tiers</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-num">AGENT 02</div>
+        <h3 class="module-title">Repair Agent</h3>
+        <p class="module-desc">يدير تذاكر الصيانة، يتابع IMEI، ويرسل تحديثات للزبائن تلقائياً.</p>
+        <ul class="module-list">
+          <li>فتح تذاكر من WhatsApp مباشرة</li>
+          <li>تتبع حالة الإصلاح</li>
+          <li>تنبيهات الزبائن عند الجاهزية</li>
+          <li>إدارة الضمان</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-num">AGENT 03</div>
+        <h3 class="module-title">Rental Agent</h3>
+        <p class="module-desc">يحسب الإيجارات، يقسّم الفواتير المشتركة، ويذكّر المتأخرين عنك.</p>
+        <ul class="module-list">
+          <li>حساب utility split بدقة</li>
+          <li>تنبيهات انتهاء العقود</li>
+          <li>تذكيرات الدفع تلقائية</li>
+          <li>تتبع المستأجرين والإشغال</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-num">AGENT 04</div>
+        <h3 class="module-title">Finance Agent</h3>
+        <p class="module-desc">يجمّع المصاريف، يحسب VAT، ويولّد تقارير شهرية بنقرة واحدة.</p>
+        <ul class="module-list">
+          <li>تقارير VAT جاهزة</li>
+          <li>P&amp;L شهري تلقائي</li>
+          <li>مطابقة بنكية</li>
+          <li>كشف حسابات للموردين</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-num">AGENT 05</div>
+        <h3 class="module-title">Comms Agent</h3>
+        <p class="module-desc">يرد على رسائل WhatsApp بصوت علامتك التجارية، ويصمّم بوستات سوشيال ميديا.</p>
+        <ul class="module-list">
+          <li>ردود WhatsApp مع قوالب معتمدة من Meta</li>
+          <li>مسوّدات بوستات Instagram/Facebook</li>
+          <li>إيميلات تسويقية</li>
+          <li>مراقبة المراجعات والتعليقات</li>
+        </ul>
+      </div>
+
+      <div class="module">
+        <div class="module-num">CORE</div>
+        <h3 class="module-title">Orchestrator</h3>
+        <p class="module-desc">العقل المركزي. يوزّع المهام، يراقب التكلفة، يطلب موافقتك على القرارات الحساسة.</p>
+        <ul class="module-list">
+          <li>توزيع ذكي للمهام</li>
+          <li>طلب موافقة على T3+ actions</li>
+          <li>circuit breaker للتكاليف</li>
+          <li>audit log كامل</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== HOW IT WORKS ====== -->
+<section class="section" id="how">
+  <div class="section-tag">كيف يعمل</div>
+  <h2 class="section-title">من الفكرة إلى أوّل عملية مؤتمتة في 4 أسابيع</h2>
+  <p class="section-sub">
+    نبدأ بفهم عملك، ثم نبني تدريجياً. لا قفزات في الظلام، لا "سيشتغل بإذن الله".
+  </p>
+
+  <div class="how-grid">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3 class="step-title">جلسة اكتشاف</h3>
+      <p class="step-desc">90 دقيقة معك. نخريط workflows اليومية، نحدد أكبر 3 آلام، ونتفق على الـ scope.</p>
+      <div class="step-week">الأسبوع 1</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3 class="step-title">تحضير البيئة</h3>
+      <p class="step-desc">نوصل النظام بـ WooCommerce / POS / WhatsApp. نهيّأ الـ memory ونغلّف الـ tools في MCPs.</p>
+      <div class="step-week">الأسبوع 2</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3 class="step-title">تشغيل أول agent</h3>
+      <p class="step-desc">نختار الـ agent الأكثر تأثيراً (عادةً Comms أو Shop). يبدأ يعمل تحت إشرافك مع موافقات على كل T3 action.</p>
+      <div class="step-week">الأسبوع 3</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3 class="step-title">توسيع وتحسين</h3>
+      <p class="step-desc">نضيف باقي الـ agents تدريجياً، نراقب الأداء، نعدّل الـ skills حسب feedback. 50 eval test لكل agent.</p>
+      <div class="step-week">الأسبوع 4+</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== PRICING ====== -->
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-tag">الأسعار</div>
+    <h2 class="section-title">شفافة. بدون مفاجآت. بدون lock-in.</h2>
+    <p class="section-sub">
+      تدفع Setup مرة واحدة + اشتراك شهري + add-on للـ AI. كل الأسعار EUR، تشمل دعم خلال أوقات العمل.
+    </p>
+
+    <div class="pricing-grid">
+      <div class="tier">
+        <div class="tier-name">Starter</div>
+        <div class="tier-tag">للمحلات الصغيرة، 1 موظف</div>
+        <div class="tier-price">
+          <span class="tier-price-num">50</span>
+          <span class="tier-price-curr">EUR</span>
+        </div>
+        <div class="tier-price-period">شهرياً (+ AI Add-on €50)</div>
+        <div class="tier-setup">
+          <span class="tier-setup-label">Setup مرة واحدة</span>
+          <span class="tier-setup-amount">€600</span>
+        </div>
+        <ul class="tier-features">
+          <li>WhatsApp templates</li>
+          <li>تنبيهات المخزون</li>
+          <li>Boost Basic للسوشيال</li>
+          <li>1 وكيل AI</li>
+          <li>دعم بريد إلكتروني</li>
+        </ul>
+        <a href="#contact" class="tier-cta">ابدأ مع Starter</a>
+      </div>
+
+      <div class="tier featured">
+        <div class="tier-name">Pro</div>
+        <div class="tier-tag">للمطاعم والسوبرماركت المتوسطة</div>
+        <div class="tier-price">
+          <span class="tier-price-num">100</span>
+          <span class="tier-price-curr">EUR</span>
+        </div>
+        <div class="tier-price-period">شهرياً (+ AI Add-on €100)</div>
+        <div class="tier-setup">
+          <span class="tier-setup-label">Setup مرة واحدة</span>
+          <span class="tier-setup-amount">€1,500</span>
+        </div>
+        <ul class="tier-features">
+          <li>كل ميزات Starter</li>
+          <li>3 وكلاء AI متخصصين</li>
+          <li>تنبيهات متقدمة + CRM</li>
+          <li>تقارير شهرية تلقائية</li>
+          <li>دعم WhatsApp مباشر</li>
+          <li>تكامل POS موجود</li>
+        </ul>
+        <a href="#contact" class="tier-cta">ابدأ مع Pro</a>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">Full System</div>
+        <div class="tier-tag">للأعمال الكبيرة + متعددة الفروع</div>
+        <div class="tier-price">
+          <span class="tier-price-num">300</span>
+          <span class="tier-price-curr">EUR</span>
+        </div>
+        <div class="tier-price-period">شهرياً (AI included)</div>
+        <div class="tier-setup">
+          <span class="tier-setup-label">Setup مرة واحدة</span>
+          <span class="tier-setup-amount">€6,000</span>
+        </div>
+        <ul class="tier-features">
+          <li>كل ميزات Pro</li>
+          <li>5 وكلاء AI كاملة</li>
+          <li>POS + Repair tracker</li>
+          <li>Memory و Decision learning</li>
+          <li>GDPR Toolkit كامل</li>
+          <li>دعم أولوية + إدارة حساب</li>
+        </ul>
+        <a href="#contact" class="tier-cta">ابدأ مع Full</a>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">Enterprise</div>
+        <div class="tier-tag">للشركات regulated + multi-tenant</div>
+        <div class="tier-price">
+          <span class="tier-price-num">800</span>
+          <span class="tier-price-curr">+</span>
+        </div>
+        <div class="tier-price-period">شهرياً (تخصيص)</div>
+        <div class="tier-setup">
+          <span class="tier-setup-label">Setup يبدأ من</span>
+          <span class="tier-setup-amount">€8,000</span>
+        </div>
+        <ul class="tier-features">
+          <li>كل ميزات Full System</li>
+          <li>Multi-tenant architecture</li>
+          <li>MCPs مخصصة</li>
+          <li>Ed25519 signed audit trails</li>
+          <li>SLA معتمدة</li>
+          <li>SSO + RBAC</li>
+        </ul>
+        <a href="#contact" class="tier-cta">تواصل للعرض</a>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 40px; color: var(--gray); font-size: 14px;">
+      💡 <strong>خصم 15%</strong> للدفع السنوي · <strong>−€100</strong> Setup لكل referral ناجح
+    </div>
+  </div>
+</section>
+
+<!-- ====== FAQ ====== -->
+<section class="faq" id="faq">
+  <div class="faq-inner">
+    <div class="section-tag">أسئلة شائعة</div>
+    <h2 class="section-title">الأسئلة اللي يسألها أصحاب الأعمال قبل ما يبدأوا</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">
+          هل بياناتي آمنة؟ والـ AI ما يخرّب شغلي؟
+          <div class="faq-q-icon">+</div>
+        </div>
+        <div class="faq-a">
+          نعم. النظام مبني على 4 طبقات حماية: (1) Tool Tiers — كل أداة مصنّفة من T1 (قراءة فقط) إلى T4 (مدمّر) ولا يحدث تعديل بدون موافقتك. (2) GDPR Gate لأي بيانات شخصية. (3) Banking ممنوع كلياً — حتى لو طلبت. (4) Audit log كامل لكل قرار. وكل عميل في namespace منفصل، مستحيل تتسرب بيانات لعميل ثاني.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          أنا عندي WordPress + WooCommerce — هل أحتاج أغيّر شي؟
+          <div class="faq-q-icon">+</div>
+        </div>
+        <div class="faq-a">
+          لا. النظام مصمّم خصيصاً ليعمل فوق WordPress + WooCommerce + Elementor. نضيف 3-4 plugins (OpenPOS لو محتاج POS، RepairBuddy لو محتاج تذاكر صيانة) وندمج الـ AI فوقهم. ما نطلب منك تغيير platform أو هجرة بيانات.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          كم تكلفة Claude AI الشهرية فعلياً؟
+          <div class="faq-q-icon">+</div>
+        </div>
+        <div class="faq-a">
+          للعمل المتوسط (Pro tier): 80-200 EUR شهرياً. عندنا Layer 9 (Cost Governance) — circuit breaker يقطع الـ agents تلقائياً لو تجاوزوا الميزانية، و auto-downgrade من Opus لـ Sonnet لـ Haiku حسب نوع المهمة. تنبيهات على 50% / 80% / 100%. ما في مفاجآت في فواتير API.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          متى أرى أول نتيجة فعلية؟
+          <div class="faq-q-icon">+</div>
+        </div>
+        <div class="faq-a">
+          الأسبوع 3 — أوّل agent يبدأ يشتغل في إنتاجك الفعلي (عادة Comms أو Shop). بعد شهر كامل تكون كل الـ 5 agents شغّالين. خلال 90 يوم نقيس KPIs محددة معك في جلسة الاكتشاف.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          ماذا لو فشل النظام أو قررت إيقافه؟
+          <div class="faq-q-icon">+</div>
+        </div>
+        <div class="faq-a">
+          لا lock-in. كل بياناتك تبقى عندك (في WordPress + Postgres). الـ AI agents فقط طبقة فوق. لو وقفت الاشتراك، الأنظمة الأساسية (متجرك، POS، إلخ) تستمر تعمل بدون مشاكل. تأخذ نسخة من كل الـ skills والـ configurations.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          هل النظام بالعربي والإنجليزي؟
+          <div class="faq-q-icon">+</div>
+        </div>
+        <div class="faq-a">
+          نعم، AR + EN في الإصدار الأول. اليوناني (EL) قادم في الإصدار 3.5. كل الواجهات RTL-aware، والـ AI agents يفهمون ويردون بالعربية والإنجليزية حسب لغة الزبون. brand voice قابل للتخصيص لكل لغة.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CTA FINAL ====== -->
+<section class="cta-final" id="contact">
+  <div class="cta-final-inner">
+    <h2>جاهز تشوف عمَلك يدور بدونك؟</h2>
+    <p>احجز جلسة اكتشاف 30 دقيقة. لا التزام، لا ضغط. فقط محادثة عن workflow عندك ووين الـ AI ينفع.</p>
+    <a href="https://wa.me/35794444500" class="btn btn-primary">
+      احجز Demo على WhatsApp
+      <span class="arrow">←</span>
+    </a>
+    <div style="margin-top: 24px; font-size: 14px; color: rgba(250,247,242,0.5);">
+      أو اتصل: +357 94 444 500 · drfone.eu@gmail.com
+    </div>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand">AI Automation</div>
+        <p class="footer-tagline">نظام أتمتة ذكي مبني في قبرص للأعمال الصغيرة والمتوسطة. بسيط من جهة الإعداد، قوي من جهة النتائج.</p>
+        <div style="font-family: 'DM Sans'; font-size: 12px; color: rgba(250,247,242,0.4); letter-spacing: 0.1em;">
+          POWERED BY CLAUDE AI · WORDPRESS · WHATSAPP BUSINESS
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>المنتج</h4>
+        <ul>
+          <li><a href="#solution">الميزات</a></li>
+          <li><a href="#pricing">الأسعار</a></li>
+          <li><a href="#how">كيف يعمل</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>الشركة</h4>
+        <ul>
+          <li>DR FONE CYPRUS LTD</li>
+          <li>Rigenis 12-14, Nicosia</li>
+          <li>+357 94 444 500</li>
+          <li>drfone.eu@gmail.com</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>قانوني</h4>
+        <ul>
+          <li><a href="#">سياسة الخصوصية</a></li>
+          <li><a href="#">شروط الخدمة</a></li>
+          <li><a href="#">DPA (GDPR)</a></li>
+          <li><a href="#">Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 DR FONE CYPRUS LTD. كل الحقوق محفوظة.</div>
+      <div>Built in 🇨🇾 Cyprus · v3.0</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+</script>
+
+</body>
+</html>

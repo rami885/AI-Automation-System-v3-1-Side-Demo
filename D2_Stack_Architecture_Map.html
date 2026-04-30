@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stack Architecture Map — AI Automation System v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #265092;
+  --blue-deep: #1a3a6c;
+  --blue-light: #4a7bc7;
+  --red: #DF111B;
+  --red-deep: #b00d15;
+  --ink: #0a1628;
+  --ink-soft: #1e2d44;
+  --paper: #f4f1ea;
+  --paper-warm: #ebe6d9;
+  --grid: rgba(38,80,146,0.08);
+  --rule: #c7bfa9;
+  --gold: #b8893f;
+  --green: #1f6b3a;
+  --orange: #c95f1c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at top right, rgba(223,17,27,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(38,80,146,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- Header / Title Block (blueprint title) ---------- */
+.title-block {
+  position: relative;
+  max-width: 1400px;
+  margin: 40px auto 30px;
+  padding: 32px 48px;
+  border: 2px solid var(--ink);
+  background: var(--paper-warm);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: end;
+  z-index: 1;
+}
+.title-block::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--ink);
+  pointer-events: none;
+}
+.title-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.title-meta span { color: var(--red); font-weight: 700; }
+.title-main {
+  font-family: 'Fraunces', serif;
+  font-size: 56px;
+  line-height: 0.95;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.title-main em {
+  font-style: italic;
+  color: var(--blue);
+  font-weight: 400;
+}
+.title-sub {
+  font-family: 'IBM Plex Sans Arabic';
+  font-size: 18px;
+  color: var(--ink-soft);
+  margin-top: 14px;
+  max-width: 700px;
+  line-height: 1.5;
+}
+.title-stamp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-align: center;
+  border: 1.5px solid var(--red);
+  color: var(--red);
+  padding: 10px 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  transform: rotate(-3deg);
+  background: var(--paper);
+}
+.title-stamp .big { font-size: 22px; display: block; margin-top: 4px; }
+
+/* ---------- Legend ---------- */
+.legend {
+  max-width: 1400px;
+  margin: 0 auto 40px;
+  padding: 20px 48px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; color: var(--ink-soft); }
+.legend-swatch {
+  width: 14px; height: 14px;
+  border: 1.5px solid var(--ink);
+}
+.swatch-active { background: var(--blue); }
+.swatch-new { background: var(--red); }
+.swatch-existing { background: var(--green); }
+.swatch-pending { background: var(--paper-warm); }
+
+/* ---------- Stack Container ---------- */
+.stack {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Layer ---------- */
+.layer {
+  position: relative;
+  margin-bottom: 16px;
+  border: 2px solid var(--ink);
+  background: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.layer:hover {
+  transform: translateX(-6px);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+.layer.expanded {
+  box-shadow: 8px 8px 0 var(--ink);
+  transform: translateX(-6px);
+}
+.layer-header {
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+}
+.layer.expanded .layer-header { border-bottom-color: var(--rule); }
+.layer-num {
+  font-family: 'Fraunces', serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 0.9;
+  color: var(--blue);
+  font-style: italic;
+}
+.layer.is-new .layer-num { color: var(--red); }
+.layer-info { display: flex; flex-direction: column; gap: 4px; }
+.layer-title {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.layer-tagline {
+  font-family: 'IBM Plex Sans Arabic';
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.layer-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+.layer-toggle {
+  width: 48px; height: 48px;
+  border: 2px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  background: var(--paper-warm);
+  transition: transform 0.3s ease;
+}
+.layer.expanded .layer-toggle {
+  background: var(--blue);
+  color: white;
+  transform: rotate(45deg);
+}
+.layer.is-new.expanded .layer-toggle { background: var(--red); }
+
+/* ---------- Layer Body ---------- */
+.layer-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.layer.expanded .layer-body { max-height: 2000px; }
+.layer-body-inner {
+  padding: 28px 28px 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.component {
+  border: 1.5px solid var(--rule);
+  padding: 18px 20px;
+  background: var(--paper);
+  position: relative;
+  transition: all 0.2s ease;
+}
+.component:hover {
+  border-color: var(--ink);
+  background: var(--paper-warm);
+}
+.component.new {
+  border-color: var(--red);
+  border-style: solid;
+  background: linear-gradient(135deg, var(--paper) 0%, rgba(223,17,27,0.04) 100%);
+}
+.component.existing { border-color: var(--green); }
+.component-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.component-tag {
+  font-size: 9px;
+  padding: 2px 6px;
+  background: var(--ink);
+  color: var(--paper);
+  letter-spacing: 0.1em;
+}
+.component.new .component-tag { background: var(--red); }
+.component.existing .component-tag { background: var(--green); }
+.component-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* ---------- Decorative connectors ---------- */
+.layer-connector {
+  position: absolute;
+  right: -24px;
+  top: 50%;
+  width: 24px;
+  height: 1.5px;
+  background: var(--ink);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.layer:hover .layer-connector { opacity: 1; }
+.layer-connector::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 7px; height: 7px;
+  background: var(--ink);
+  border-radius: 50%;
+}
+
+/* ---------- Footer notes ---------- */
+.footer-notes {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 48px 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  position: relative;
+  z-index: 1;
+  border-top: 2px solid var(--ink);
+}
+.note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.note-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--red);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+/* ---------- Mobile responsive ---------- */
+@media (max-width: 768px) {
+  .title-block {
+    grid-template-columns: 1fr;
+    padding: 24px;
+    margin: 20px 16px;
+  }
+  .title-main { font-size: 36px; }
+  .title-stamp { transform: rotate(0); align-self: flex-start; }
+  .legend { padding: 16px 24px; gap: 16px; }
+  .stack { padding: 0 16px 60px; }
+  .layer-header {
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    padding: 16px 18px;
+  }
+  .layer-num { font-size: 40px; }
+  .layer-title { font-size: 18px; }
+  .layer-tagline { font-size: 12px; }
+  .layer-toggle { width: 36px; height: 36px; font-size: 18px; }
+  .layer-body-inner {
+    grid-template-columns: 1fr;
+    padding: 18px;
+    gap: 12px;
+  }
+  .footer-notes {
+    grid-template-columns: 1fr;
+    padding: 24px;
+    gap: 20px;
+  }
+}
+
+/* ---------- Animations ---------- */
+@keyframes draw-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.layer { animation: draw-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+.layer:nth-child(1) { animation-delay: 0.05s; }
+.layer:nth-child(2) { animation-delay: 0.1s; }
+.layer:nth-child(3) { animation-delay: 0.15s; }
+.layer:nth-child(4) { animation-delay: 0.2s; }
+.layer:nth-child(5) { animation-delay: 0.25s; }
+.layer:nth-child(6) { animation-delay: 0.3s; }
+.layer:nth-child(7) { animation-delay: 0.35s; }
+.layer:nth-child(8) { animation-delay: 0.4s; }
+.layer:nth-child(9) { animation-delay: 0.45s; }
+</style>
+</head>
+<body>
+
+<header class="title-block">
+  <div>
+    <div class="title-meta">DOC: ARCH-001 · REV: v3.0 · DATE: <span>2026.04</span> · CLASSIFICATION: INTERNAL</div>
+    <h1 class="title-main">Stack Architecture<br><em>9-Layer Blueprint</em></h1>
+    <p class="title-sub">المخطط الفني الكامل لنظام AI Automation System v3 — تسعة طبقات معمارية، خمس وكلاء متخصصين، خمس عشرة MCP integration، طبقة تحكم تكلفة جديدة.</p>
+  </div>
+  <div class="title-stamp">
+    Production<span class="big">v3.0</span>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><span class="legend-swatch swatch-existing"></span>موجود فعلياً</div>
+  <div class="legend-item"><span class="legend-swatch swatch-active"></span>قيد البناء (W3-W12)</div>
+  <div class="legend-item"><span class="legend-swatch swatch-new"></span>جديد في v3</div>
+  <div class="legend-item"><span class="legend-swatch swatch-pending"></span>اختياري / v3.5</div>
+  <div class="legend-item" style="margin-right:auto; color:var(--red); font-weight:700;">↓ اضغط أي طبقة لعرض التفاصيل</div>
+</div>
+
+<main class="stack">
+
+  <!-- L1 INTERFACE -->
+  <article class="layer" data-layer="1">
+    <div class="layer-header">
+      <div class="layer-num">01</div>
+      <div class="layer-info">
+        <div class="layer-code">L1 · INTERFACE LAYER</div>
+        <h2 class="layer-title">Interface — نقاط دخول المستخدم</h2>
+        <p class="layer-tagline">القنوات اللي بيها يدخل المستأجر / الزبون / الموظف على النظام</p>
+      </div>
+      <div class="layer-toggle">+</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <div class="component existing">
+          <div class="component-name">WhatsApp Cloud API <span class="component-tag">EXISTS</span></div>
+          <div class="component-desc">القناة الرئيسية للزبون والمستأجر. 11 templates معتمدة من Meta. opt-in compliance.</div>
+        </div>
+        <div class="component existing">
+          <div class="component-name">Telegram Bot <span class="component-tag">EXISTS</span></div>
+          <div class="component-desc">SKU lookup bot موجود فعلاً. للإستخدام الداخلي بين الموظفين.</div>
+        </div>
+        <div class="component existing">
+          <div class="component-name">Woodmart Storefront <span class="component-tag">EXISTS</span></div>
+          <div class="component-desc">drfone.eu - 4,986 منتج. RTL Arabic + Elementor. واجهة الزبائن العامة.</div>
+        </div>
+        <div class="component existing">
+          <div class="component-name">OpenPOS Terminal <span class="component-tag">EXISTS</span></div>
+          <div class="component-desc">شاشة الكاشير في المحل. WC-native + hardware support (printers, scanners).</div>
+        </div>
+        <div class="component existing">
+          <div class="component-name">Wekan Boards <span class="component-tag">EXISTS</span></div>
+          <div class="component-desc">Task management داخلي. 4 boards: Rentals · Shop · Admin · Personal.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Admin UI (Next.js) <span class="component-tag">W13</span></div>
+          <div class="component-desc">لوحة التحكم لرامي والإدارة. RTL + Tailwind. تُبنى في Week 13.</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- L2 ORCHESTRATOR -->
+  <article class="layer" data-layer="2">
+    <div class="layer-header">
+      <div class="layer-num">02</div>
+      <div class="layer-info">
+        <div class="layer-code">L2 · ORCHESTRATION LAYER</div>
+        <h2 class="layer-title">Orchestrator — العقل المركزي</h2>
+        <p class="layer-tagline">يستقبل intent + يوزّع للـ sub-agent المناسب. لا ينفّذ مباشرة.</p>
+      </div>
+      <div class="layer-toggle">+</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <div class="component new">
+          <div class="component-name">Master Agent <span class="component-tag">CLAUDE OPUS 4.7</span></div>
+          <div class="component-desc">القرارات المعقدة فقط. 1M context window. tier routing + final approval gates.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Intent Classifier <span class="component-tag">W8</span></div>
+          <div class="component-desc">يصنّف الرسالة الداخلة: shop/repair/rental/finance/comms. Sonnet للسرعة.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Memory Router <span class="component-tag">W8</span></div>
+          <div class="component-desc">يحدد أي طبقة memory تُستدعى لكل request. يقلل التوكنز بنسبة ~40%.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Tier Enforcer <span class="component-tag">W5</span></div>
+          <div class="component-desc">يفحص T1-T4 قبل تمرير الـ tool call. يرفض غير المصرّح.</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- L3 SUB-AGENTS -->
+  <article class="layer" data-layer="3">
+    <div class="layer-header">
+      <div class="layer-num">03</div>
+      <div class="layer-info">
+        <div class="layer-code">L3 · SUB-AGENT LAYER</div>
+        <h2 class="layer-title">Sub-Agents — خمسة وكلاء متخصصين</h2>
+        <p class="layer-tagline">كل وكيل له نطاق ضيق + أدوات محدودة + skills خاصة به</p>
+      </div>
+      <div class="layer-toggle">+</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <div class="component new">
+          <div class="component-name">shop-agent <span class="component-tag">SONNET 4.6</span></div>
+          <div class="component-desc">Dr.Fone shop · WooCommerce · موردين · Amazon · IMEI tracking. T3 لتحديث الأسعار.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">repair-agent <span class="component-tag">SONNET 4.6</span></div>
+          <div class="component-desc">RepairBuddy tickets · IMEI lookup · warranty · technician assignment.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">rental-agent <span class="component-tag">SONNET 4.6</span></div>
+          <div class="component-desc">Laravel API · 13 unit · utility split · contract renewals. T4 للإنهاء.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">finance-agent <span class="component-tag">SONNET / OPUS</span></div>
+          <div class="component-desc">VAT · invoicing · P&amp;L · bank reconciliation. Opus لمنطق VAT المعقّد.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">comms-agent <span class="component-tag">SONNET 4.6</span></div>
+          <div class="component-desc">WhatsApp · Email · Social Boost. Brand voice متعدد (friendly/pragmatic).</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- L4 MCP -->
+  <article class="layer" data-layer="4">
+    <div class="layer-header">
+      <div class="layer-num">04</div>
+      <div class="layer-info">
+        <div class="layer-code">L4 · TOOL SURFACE</div>
+        <h2 class="layer-title">MCP Integrations — 15 أداة معيارية</h2>
+        <p class="layer-tagline">كل integration مغلّف في MCP منفصل. الـ agent يستدعي بدون معرفة التفاصيل.</p>
+      </div>
+      <div class="layer-toggle">+</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <div class="component new">
+          <div class="component-name">WooCommerce MCP <span class="component-tag">W3</span></div>
+          <div class="component-desc">REST API wrapper. T1: read products. T3: update_price/stock. T4: delete.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">RepairBuddy MCP <span class="component-tag">W4 · NEW</span></div>
+          <div class="component-desc">يحتاج PHP bridge (~100 سطر). tickets, IMEI, warranty endpoints.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">OpenPOS MCP <span class="component-tag">W4 · NEW</span></div>
+          <div class="component-desc">POS sessions, sales, cashier summaries, daily-close, stock sync.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">Bulky MCP <span class="component-tag">W3 · NEW</span></div>
+          <div class="component-desc">Bulk edit. ينظّف الـ 2,080 zero-stock products في Phase 1.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">Woodmart MCP <span class="component-tag">W3 · NEW</span></div>
+          <div class="component-desc">Theme settings, homepage blocks, product layouts للـ visual updates.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Laravel API MCP <span class="component-tag">W3</span></div>
+          <div class="component-desc">50+ endpoints. tenants · contracts · utility · journal · invoices.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">WhatsApp Cloud MCP <span class="component-tag">W4</span></div>
+          <div class="component-desc">send_template (T3) · status webhooks · 11 templates مدارة.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">n8n MCP <span class="component-tag">W4</span></div>
+          <div class="component-desc">trigger_workflow · list executions. للـ scheduled tasks (daily close, alerts).</div>
+        </div>
+        <div class="component existing">
+          <div class="component-name">Hostinger MCP <span class="component-tag">OFFICIAL</span></div>
+          <div class="component-desc">رسمي من Hostinger. VPS metrics · DNS · snapshots · firewall.</div>
+        </div>
+        <div class="component existing">
+          <div class="component-name">Google Sheets MCP <span class="component-tag">OFFICIAL</span></div>
+          <div class="component-desc">للمرحلة الانتقالية. read_range, append_row للـ accounting.</div>
+        </div>
+        <div class="component existing">
+          <div class="component-name">Gmail MCP <span class="component-tag">OFFICIAL</span></div>
+          <div class="component-desc">search · read · draft (T2) · send (T3). للـ comms-agent.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Telegram MCP · Wekan MCP · Postgres MCP · Qdrant MCP <span class="component-tag">W3-4</span></div>
+          <div class="component-desc">+4 MCPs أساسية. Postgres = read-only T1. Qdrant = vector search للـ RAG.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Stripe MCP <span class="component-tag">v3.5</span></div>
+          <div class="component-desc">للـ payments لاحقاً. list_charges (T1) · refund (T4 manual approval).</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- L5 MEMORY -->
+  <article class="layer" data-layer="5">
+    <div class="layer-header">
+      <div class="layer-num">05</div>
+      <div class="layer-info">
+        <div class="layer-code">L5 · MEMORY &amp; KNOWLEDGE</div>
+        <h2 class="layer-title">Memory — سبع طبقات معرفة</h2>
+        <p class="layer-tagline">من الذاكرة الفورية للـ semantic RAG. Decision Memory جديدة في v3.</p>
+      </div>
+      <div class="layer-toggle">+</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <div class="component">
+          <div class="component-name">Hot Index <span class="component-tag">MEMORY.MD</span></div>
+          <div class="component-desc">تفضيلات + قواعد عمل. Huawei distributor X = 5% bulk on >100.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Cold Storage <span class="component-tag">MARKDOWN</span></div>
+          <div class="component-desc">ملف لكل entity: customer · product · tenant · supplier.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Episodic <span class="component-tag">POSTGRES</span></div>
+          <div class="component-desc">محادثات هامة كاملة + قرارات اتُّخذت. retention 90 يوم.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Semantic RAG <span class="component-tag">QDRANT</span></div>
+          <div class="component-desc">العقود · الفواتير · WhatsApp threads. permanent retention.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Procedural <span class="component-tag">SKILLS/</span></div>
+          <div class="component-desc">skill_vat_invoice.md · skill_utility_split.md. ~45 skill من 185.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Audit Memory <span class="component-tag">AUDITLOG</span></div>
+          <div class="component-desc">كل tool call + موافقة + GDPR action. immutable.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">Decision Memory <span class="component-tag">PG + QDRANT · NEW</span></div>
+          <div class="component-desc">السبب + البدائل المرفوضة + الـ outcome. الـ orchestrator يتعلم منها.</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- L6 DATA -->
+  <article class="layer" data-layer="6">
+    <div class="layer-header">
+      <div class="layer-num">06</div>
+      <div class="layer-info">
+        <div class="layer-code">L6 · DATA SUBSTRATE</div>
+        <h2 class="layer-title">Data Layer — مصادر الحقيقة</h2>
+        <p class="layer-tagline">PostgreSQL لـ Laravel · MySQL لـ WordPress · Sheets للمرحلة الانتقالية</p>
+      </div>
+      <div class="layer-toggle">+</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <div class="component">
+          <div class="component-name">PostgreSQL (Laravel) <span class="component-tag">SoT</span></div>
+          <div class="component-desc">products · tenants · contracts · journal_entries. الـ source of truth.</div>
+        </div>
+        <div class="component existing">
+          <div class="component-name">MySQL (WordPress) <span class="component-tag">EXISTS</span></div>
+          <div class="component-desc">wc_orders · repair_tickets · pos_sales · woodmart_settings.</div>
+        </div>
+        <div class="component existing">
+          <div class="component-name">Google Sheets <span class="component-tag">TRANSITIONAL</span></div>
+          <div class="component-desc">RENT_2026_v12.2.xlsx · 5 accounting files. تُهاجر تدريجياً.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Qdrant Vector DB <span class="component-tag">DOCKER</span></div>
+          <div class="component-desc">embeddings للـ RAG. self-hosted على نفس VPS. open source.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Redis <span class="component-tag">CACHE</span></div>
+          <div class="component-desc">confirm_tokens (TTL 5min) · rate limiting · session cache.</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- L7 SAFETY -->
+  <article class="layer" data-layer="7">
+    <div class="layer-header">
+      <div class="layer-num">07</div>
+      <div class="layer-info">
+        <div class="layer-code">L7 · SAFETY &amp; COMPLIANCE</div>
+        <h2 class="layer-title">Safety — الحماية والامتثال</h2>
+        <p class="layer-tagline">Tool Tiers + GDPR Gate + 6 attack mitigations + multi-tenant isolation</p>
+      </div>
+      <div class="layer-toggle">+</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <div class="component">
+          <div class="component-name">Tool Tiers (T1-T4) <span class="component-tag">CORE</span></div>
+          <div class="component-desc">T1 read · T2 draft · T3 write+confirm · T4 destructive+double · Forbidden=banking.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">GDPR Gate <span class="component-tag">PIN+REASON</span></div>
+          <div class="component-desc">أي export/delete لبيانات شخصية = PIN + سبب قانوني + log.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Channel Separation <span class="component-tag">3-LAYER</span></div>
+          <div class="component-desc">analysis (مخفي) / commentary / final. يمنع تسرّب أسعار الشراء.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">6 Attack Mitigations <span class="component-tag">v3 NEW</span></div>
+          <div class="component-desc">Flattery · Prefix-spoofing · Context-pollution · Memory-flooding · Validation-pivot · Approval-spoofing.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">Multi-Tenant Isolation <span class="component-tag">v3 NEW</span></div>
+          <div class="component-desc">namespace per client + row-level security + secrets isolation.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Confirm Token System <span class="component-tag">REDIS</span></div>
+          <div class="component-desc">T3 = single-use token, TTL 5min. T4 = اثنين tokens.</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- L8 AUDIT -->
+  <article class="layer" data-layer="8">
+    <div class="layer-header">
+      <div class="layer-num">08</div>
+      <div class="layer-info">
+        <div class="layer-code">L8 · AUDIT &amp; OBSERVABILITY</div>
+        <h2 class="layer-title">Audit Trail — السجل الكامل</h2>
+        <p class="layer-tagline">كل قرار + كل tool call + كل موافقة. immutable. Ed25519 optional.</p>
+      </div>
+      <div class="layer-toggle">+</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <div class="component existing">
+          <div class="component-name">AuditLog Model <span class="component-tag">LARAVEL</span></div>
+          <div class="component-desc">موجود في Laravel project. كل MCP يكتب فيه. immutable indexed.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">Ed25519 Signed Receipts <span class="component-tag">v3 OPTIONAL</span></div>
+          <div class="component-desc">للـ enterprise compliance. cryptographic proof of action.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Sentry Errors <span class="component-tag">FREE TIER</span></div>
+          <div class="component-desc">5K events/month. errors + performance + alerts.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Prometheus + Grafana <span class="component-tag">W12</span></div>
+          <div class="component-desc">metrics + dashboards. SLOs + cost tracking + agent health.</div>
+        </div>
+        <div class="component">
+          <div class="component-name">Daily Standup Bot <span class="component-tag">AUTOMATED</span></div>
+          <div class="component-desc">6 صباحاً كل يوم. Top 5 metrics + breached thresholds → WhatsApp.</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- L9 COST GOVERNANCE - NEW -->
+  <article class="layer is-new" data-layer="9">
+    <div class="layer-header">
+      <div class="layer-num">09</div>
+      <div class="layer-info">
+        <div class="layer-code">L9 · COST GOVERNANCE — <span style="color:var(--red);font-weight:700;">NEW IN V3</span></div>
+        <h2 class="layer-title">Cost Governance — حماية التكلفة</h2>
+        <p class="layer-tagline">Circuit breaker · budget per agent · auto-downgrade Opus→Sonnet→Haiku</p>
+      </div>
+      <div class="layer-toggle">+</div>
+    </div>
+    <div class="layer-body">
+      <div class="layer-body-inner">
+        <div class="component new">
+          <div class="component-name">Circuit Breaker <span class="component-tag">100% BLOCK</span></div>
+          <div class="component-desc">يقطع الـ agent تلقائياً لو تعدّى ميزانيته الشهرية. لا يُستأنف إلا بإذن رامي.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">Budget Per Agent <span class="component-tag">€/MONTH</span></div>
+          <div class="component-desc">shop=€50 · comms=€50 · finance=€40 · rental=€30 · repair=€30 · orchestrator=€80.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">Auto-Downgrade <span class="component-tag">SMART</span></div>
+          <div class="component-desc">T1 reads = Haiku 4.5 (أرخص) · T2/T3 = Sonnet · GDPR/compliance = Opus 4.7 فقط.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">Alerts 50/80/100% <span class="component-tag">3-STAGE</span></div>
+          <div class="component-desc">50% = info notification · 80% = warning + slow-down · 100% = block + escalate.</div>
+        </div>
+        <div class="component new">
+          <div class="component-name">Prompt Caching <span class="component-tag">1HR TTL</span></div>
+          <div class="component-desc">system prompts cached aggressively. ~40% توفير على المكالمات المتكررة.</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<footer class="footer-notes">
+  <div class="note">
+    <div class="note-label">DESIGN PRINCIPLES</div>
+    1. Orchestrator لا ينفّذ — يوزّع فقط<br>
+    2. كل sub-agent له نطاق ضيق وأدوات محدودة<br>
+    3. T3+ يحتاج موافقة بشرية صريحة<br>
+    4. Banking ممنوع — حتى مع موافقة<br>
+    5. كل قرار في Audit Trail<br>
+    6. Cost circuit breaker يعمل قبل أي ضرر مالي
+  </div>
+  <div class="note">
+    <div class="note-label">EXECUTION</div>
+    Foundation: W0-W2 (هذا الشهر)<br>
+    MCP Layer: W3-W4<br>
+    Agents: W5-W8<br>
+    Safety + Compliance: W9<br>
+    Pilot Dr.Fone: W10<br>
+    Pilot Rental: W11<br>
+    Hardening: W12<br>
+    Productize: W13-W14<br>
+    First sale: W15
+  </div>
+  <div class="note">
+    <div class="note-label">CRITICAL PATH BLOCKERS</div>
+    <span style="color:var(--red);font-weight:700;">D8</span> Revoke leaked WC API keys (TODAY)<br>
+    <span style="color:var(--red);font-weight:700;">D9</span> Excel utility split audit (هذا الأسبوع)<br>
+    <span style="color:var(--red);font-weight:700;">D10</span> WhatsApp Business reg (Meta 7-10 days)<br>
+    <span style="color:var(--red);font-weight:700;">D7</span> Hetzner migration decision (قبل W1)<br><br>
+    DOC v3.0 · ARCH-001 · Dr.Fone Cyprus
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.layer').forEach(layer => {
+  layer.addEventListener('click', () => {
+    layer.classList.toggle('expanded');
+  });
+});
+</script>
+
+</body>
+</html>

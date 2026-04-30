@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cost Governance Dashboard — Layer 9 | AI Automation System v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #265092;
+  --blue-deep: #1a3a6c;
+  --blue-soft: #3a6bb0;
+  --red: #DF111B;
+  --red-deep: #b00d15;
+  --white: #ffffff;
+  --cream: #faf7f2;
+  --sand: #efe9dd;
+  --ink: #0c1a30;
+  --ink-soft: #2a3958;
+  --gray: #6b7a91;
+  --gray-light: #b8bfcc;
+  --line: #e2dccd;
+  --gold: #c89a4a;
+  --green: #1a7a3e;
+  --green-soft: #d6efdf;
+  --amber: #d68910;
+  --amber-soft: #fcf0d6;
+  --red-soft: #fcdcde;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.5;
+  font-size: 15px;
+}
+.mono, code { font-family: 'JetBrains Mono', monospace; }
+.en { font-family: 'DM Sans', sans-serif; direction: ltr; display: inline-block; }
+
+/* ============== HEADER ============== */
+.header {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 100%);
+  color: var(--white);
+  padding: 24px 20px 28px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(12, 26, 48, 0.15);
+}
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.header-title h1 {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+.header-title .subtitle {
+  font-size: 12px;
+  opacity: 0.85;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.header-status {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.status-pill {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 8px #4ade80;
+  animation: pulse 2s infinite;
+}
+.status-dot.warn { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+.status-dot.crit { background: #ff5c66; box-shadow: 0 0 8px #ff5c66; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ============== LAYOUT ============== */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ============== TOP STATS ============== */
+.top-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--blue);
+}
+.stat-card.warn::before { background: var(--amber); }
+.stat-card.crit::before { background: var(--red); }
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--gray);
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.stat-value {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.stat-value .currency { font-size: 18px; opacity: 0.6; font-weight: 600; }
+.stat-meta {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--gray);
+}
+.stat-meta .delta-up { color: var(--red); font-weight: 600; }
+.stat-meta .delta-down { color: var(--green); font-weight: 600; }
+
+/* ============== SECTION ============== */
+.section {
+  margin-bottom: 36px;
+}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.section-subtitle {
+  font-size: 13px;
+  color: var(--gray);
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+
+/* ============== AGENT GRID ============== */
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.agent-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.agent-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(12,26,48,0.08);
+}
+.agent-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.agent-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.agent-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--sand);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.agent-tier {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+  background: var(--sand);
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.agent-tier.opus { background: #2a3958; color: var(--white); }
+.agent-tier.sonnet { background: var(--blue); color: var(--white); }
+.agent-tier.haiku { background: #d6efdf; color: var(--green); }
+
+/* gauge */
+.gauge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.gauge {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  position: relative;
+}
+.gauge-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+}
+.gauge-pct {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--ink);
+}
+.gauge-pct-label {
+  font-size: 9px;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.gauge-stats {
+  flex: 1;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.gauge-stats .row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.gauge-stats .row .label { color: var(--gray); }
+.gauge-stats .row .value { font-weight: 600; color: var(--ink); }
+.gauge-stats .row .value.over { color: var(--red); }
+.agent-status {
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+.agent-status.ok { background: var(--green-soft); color: var(--green); }
+.agent-status.warn { background: var(--amber-soft); color: var(--amber); }
+.agent-status.crit { background: var(--red-soft); color: var(--red-deep); }
+.agent-status .icon { font-size: 14px; }
+
+/* ============== TWO-COL ============== */
+.two-col {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 20px;
+}
+
+.panel {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+}
+.panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-title .badge {
+  font-size: 10px;
+  background: var(--sand);
+  color: var(--ink-soft);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+  letter-spacing: 0.3px;
+}
+
+/* trend chart */
+.trend-chart {
+  width: 100%;
+  height: 200px;
+  margin: 8px 0 16px;
+}
+.trend-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.trend-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-soft);
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* model breakdown */
+.model-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.model-row {
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.model-row-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.model-row-name {
+  font-weight: 700;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.model-row-name .pill {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--sand);
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.model-row-cost { font-weight: 700; color: var(--ink); }
+.model-row-bar {
+  height: 12px;
+  background: var(--sand);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.model-row-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.6s;
+}
+.model-row-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--gray);
+}
+
+/* circuit breaker */
+.cb-section {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.cb-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--cream);
+}
+.cb-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.cb-state {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.cb-state .led {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+}
+.cb-state.tripped .led { background: var(--red); box-shadow: 0 0 10px var(--red); }
+.cb-state.warn .led { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+.cb-meta {
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 8px;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+
+/* savings */
+.savings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.savings-row:last-child { border-bottom: none; padding-bottom: 0; }
+.savings-row .label {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.savings-row .value {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--green);
+}
+.savings-row .value.neutral { color: var(--ink); }
+
+/* events table */
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.events-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gray);
+  font-weight: 700;
+  padding: 10px 8px;
+  border-bottom: 2px solid var(--line);
+}
+.events-table td {
+  font-size: 13px;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+.events-table tr:last-child td { border-bottom: none; }
+.events-table .event-type {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+}
+.event-type.downgrade { background: var(--amber-soft); color: var(--amber); }
+.event-type.cap { background: var(--red-soft); color: var(--red-deep); }
+.event-type.cache { background: var(--green-soft); color: var(--green); }
+.event-type.alert { background: #fff4d6; color: #8a6500; }
+
+/* footer */
+.footer-note {
+  margin-top: 32px;
+  padding: 18px 20px;
+  background: var(--white);
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--gray);
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  direction: ltr;
+}
+.footer-note strong { color: var(--ink); }
+
+/* responsive */
+@media (max-width: 960px) {
+  .top-stats { grid-template-columns: repeat(2, 1fr); }
+  .agent-grid { grid-template-columns: repeat(2, 1fr); }
+  .two-col { grid-template-columns: 1fr; }
+  .cb-section { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .top-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-value { font-size: 22px; }
+  .agent-grid { grid-template-columns: 1fr; }
+  .header-title h1 { font-size: 18px; }
+  .container { padding: 16px 14px 40px; }
+  .gauge { width: 72px; height: 72px; }
+  .gauge-pct { font-size: 16px; }
+  .panel { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-title">
+      <h1>📊 Cost Governance Dashboard</h1>
+      <div class="subtitle">Layer 9 · AI Automation System v3 · DR FONE CYPRUS LTD</div>
+    </div>
+    <div class="header-status">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        Circuit breaker: ARMED
+      </div>
+      <div class="status-pill">
+        <span class="status-dot warn"></span>
+        2 agents at 80%+
+      </div>
+      <div class="status-pill" style="background:rgba(255,255,255,0.18);">
+        <span class="mono">April 2026 · Day 30/30</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TOP STATS -->
+  <div class="top-stats">
+    <div class="stat-card">
+      <div class="stat-label">Monthly spend</div>
+      <div class="stat-value"><span class="currency">€</span>248.<span style="font-size:18px;">73</span></div>
+      <div class="stat-meta">من أصل <strong>€280</strong> budget · <span class="delta-down">−12% vs March</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Today's spend</div>
+      <div class="stat-value"><span class="currency">€</span>9.<span style="font-size:18px;">42</span></div>
+      <div class="stat-meta">7-day avg <strong>€8.30</strong> · <span class="delta-up">+13%</span></div>
+    </div>
+    <div class="stat-card warn">
+      <div class="stat-label">Projected EOM</div>
+      <div class="stat-value"><span class="currency">€</span>258.<span style="font-size:18px;">15</span></div>
+      <div class="stat-meta">92% of budget · within tolerance</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Cache hit rate</div>
+      <div class="stat-value">68<span style="font-size:18px;">%</span></div>
+      <div class="stat-meta">Saved <strong style="color:var(--green);">€87.40</strong> this month</div>
+    </div>
+  </div>
+
+  <!-- AGENT BUDGETS -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">ميزانيات الـ Sub-Agents</h2>
+        <div class="section-subtitle">Per-agent monthly budgets · alerts at 50% / 80% / 100% · auto-downgrade at 90%</div>
+      </div>
+    </div>
+
+    <div class="agent-grid">
+      <!-- Orchestrator -->
+      <div class="agent-card">
+        <div class="agent-card-header">
+          <div class="agent-name">
+            <span class="agent-icon">🎭</span>
+            Orchestrator
+          </div>
+          <span class="agent-tier opus">Opus 4.7</span>
+        </div>
+        <div class="gauge-wrap">
+          <svg class="gauge" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#efe9dd" stroke-width="10"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#265092" stroke-width="10"
+              stroke-dasharray="263.9" stroke-dashoffset="89.7" stroke-linecap="round"
+              transform="rotate(-90 50 50)"/>
+            <foreignObject x="0" y="0" width="100" height="100">
+              <div class="gauge-text">
+                <div class="gauge-pct">66%</div>
+                <div class="gauge-pct-label">used</div>
+              </div>
+            </foreignObject>
+          </svg>
+          <div class="gauge-stats">
+            <div class="row"><span class="label">Spent</span><span class="value">€52.80</span></div>
+            <div class="row"><span class="label">Budget</span><span class="value">€80.00</span></div>
+            <div class="row"><span class="label">Remaining</span><span class="value">€27.20</span></div>
+            <div class="row"><span class="label">Calls</span><span class="value">3,142</span></div>
+          </div>
+        </div>
+        <div class="agent-status ok"><span class="icon">✓</span>سليم — على المسار</div>
+      </div>
+
+      <!-- Shop -->
+      <div class="agent-card">
+        <div class="agent-card-header">
+          <div class="agent-name">
+            <span class="agent-icon">📱</span>
+            Shop Agent
+          </div>
+          <span class="agent-tier sonnet">Sonnet 4.6</span>
+        </div>
+        <div class="gauge-wrap">
+          <svg class="gauge" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#efe9dd" stroke-width="10"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#d68910" stroke-width="10"
+              stroke-dasharray="263.9" stroke-dashoffset="55.4" stroke-linecap="round"
+              transform="rotate(-90 50 50)"/>
+            <foreignObject x="0" y="0" width="100" height="100">
+              <div class="gauge-text">
+                <div class="gauge-pct">79%</div>
+                <div class="gauge-pct-label">used</div>
+              </div>
+            </foreignObject>
+          </svg>
+          <div class="gauge-stats">
+            <div class="row"><span class="label">Spent</span><span class="value">€39.50</span></div>
+            <div class="row"><span class="label">Budget</span><span class="value">€50.00</span></div>
+            <div class="row"><span class="label">Remaining</span><span class="value">€10.50</span></div>
+            <div class="row"><span class="label">Calls</span><span class="value">1,847</span></div>
+          </div>
+        </div>
+        <div class="agent-status warn"><span class="icon">⚠</span>قارب من الـ 80% — مراقبة</div>
+      </div>
+
+      <!-- Comms -->
+      <div class="agent-card">
+        <div class="agent-card-header">
+          <div class="agent-name">
+            <span class="agent-icon">💬</span>
+            Comms Agent
+          </div>
+          <span class="agent-tier sonnet">Sonnet 4.6</span>
+        </div>
+        <div class="gauge-wrap">
+          <svg class="gauge" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#efe9dd" stroke-width="10"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#DF111B" stroke-width="10"
+              stroke-dasharray="263.9" stroke-dashoffset="21.1" stroke-linecap="round"
+              transform="rotate(-90 50 50)"/>
+            <foreignObject x="0" y="0" width="100" height="100">
+              <div class="gauge-text">
+                <div class="gauge-pct">92%</div>
+                <div class="gauge-pct-label">used</div>
+              </div>
+            </foreignObject>
+          </svg>
+          <div class="gauge-stats">
+            <div class="row"><span class="label">Spent</span><span class="value over">€46.10</span></div>
+            <div class="row"><span class="label">Budget</span><span class="value">€50.00</span></div>
+            <div class="row"><span class="label">Remaining</span><span class="value">€3.90</span></div>
+            <div class="row"><span class="label">Calls</span><span class="value">2,103</span></div>
+          </div>
+        </div>
+        <div class="agent-status crit"><span class="icon">🔻</span>auto-downgrade فُعِّل → Haiku</div>
+      </div>
+
+      <!-- Finance -->
+      <div class="agent-card">
+        <div class="agent-card-header">
+          <div class="agent-name">
+            <span class="agent-icon">📊</span>
+            Finance Agent
+          </div>
+          <span class="agent-tier sonnet">Sonnet 4.6</span>
+        </div>
+        <div class="gauge-wrap">
+          <svg class="gauge" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#efe9dd" stroke-width="10"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#1a7a3e" stroke-width="10"
+              stroke-dasharray="263.9" stroke-dashoffset="158.3" stroke-linecap="round"
+              transform="rotate(-90 50 50)"/>
+            <foreignObject x="0" y="0" width="100" height="100">
+              <div class="gauge-text">
+                <div class="gauge-pct">40%</div>
+                <div class="gauge-pct-label">used</div>
+              </div>
+            </foreignObject>
+          </svg>
+          <div class="gauge-stats">
+            <div class="row"><span class="label">Spent</span><span class="value">€16.00</span></div>
+            <div class="row"><span class="label">Budget</span><span class="value">€40.00</span></div>
+            <div class="row"><span class="label">Remaining</span><span class="value">€24.00</span></div>
+            <div class="row"><span class="label">Calls</span><span class="value">412</span></div>
+          </div>
+        </div>
+        <div class="agent-status ok"><span class="icon">✓</span>منخفض الاستهلاك</div>
+      </div>
+
+      <!-- Rental -->
+      <div class="agent-card">
+        <div class="agent-card-header">
+          <div class="agent-name">
+            <span class="agent-icon">🏠</span>
+            Rental Agent
+          </div>
+          <span class="agent-tier sonnet">Sonnet 4.6</span>
+        </div>
+        <div class="gauge-wrap">
+          <svg class="gauge" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#efe9dd" stroke-width="10"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#265092" stroke-width="10"
+              stroke-dasharray="263.9" stroke-dashoffset="118.8" stroke-linecap="round"
+              transform="rotate(-90 50 50)"/>
+            <foreignObject x="0" y="0" width="100" height="100">
+              <div class="gauge-text">
+                <div class="gauge-pct">55%</div>
+                <div class="gauge-pct-label">used</div>
+              </div>
+            </foreignObject>
+          </svg>
+          <div class="gauge-stats">
+            <div class="row"><span class="label">Spent</span><span class="value">€16.50</span></div>
+            <div class="row"><span class="label">Budget</span><span class="value">€30.00</span></div>
+            <div class="row"><span class="label">Remaining</span><span class="value">€13.50</span></div>
+            <div class="row"><span class="label">Calls</span><span class="value">623</span></div>
+          </div>
+        </div>
+        <div class="agent-status ok"><span class="icon">✓</span>سليم</div>
+      </div>
+
+      <!-- Repair -->
+      <div class="agent-card">
+        <div class="agent-card-header">
+          <div class="agent-name">
+            <span class="agent-icon">🔧</span>
+            Repair Agent
+          </div>
+          <span class="agent-tier haiku">Haiku 4.5</span>
+        </div>
+        <div class="gauge-wrap">
+          <svg class="gauge" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#efe9dd" stroke-width="10"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#1a7a3e" stroke-width="10"
+              stroke-dasharray="263.9" stroke-dashoffset="184.7" stroke-linecap="round"
+              transform="rotate(-90 50 50)"/>
+            <foreignObject x="0" y="0" width="100" height="100">
+              <div class="gauge-text">
+                <div class="gauge-pct">30%</div>
+                <div class="gauge-pct-label">used</div>
+              </div>
+            </foreignObject>
+          </svg>
+          <div class="gauge-stats">
+            <div class="row"><span class="label">Spent</span><span class="value">€8.95</span></div>
+            <div class="row"><span class="label">Budget</span><span class="value">€30.00</span></div>
+            <div class="row"><span class="label">Remaining</span><span class="value">€21.05</span></div>
+            <div class="row"><span class="label">Calls</span><span class="value">1,289</span></div>
+          </div>
+        </div>
+        <div class="agent-status ok"><span class="icon">✓</span>كفاءة عالية (Haiku)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TWO-COL: TREND + MODEL BREAKDOWN -->
+  <section class="section">
+    <div class="two-col">
+
+      <!-- Trend chart -->
+      <div class="panel">
+        <div class="panel-title">
+          📈 Monthly trend
+          <span class="badge">Last 6 months</span>
+        </div>
+        <svg class="trend-chart" viewBox="0 0 600 200" preserveAspectRatio="none">
+          <!-- grid -->
+          <line x1="40" y1="20" x2="580" y2="20" stroke="#efe9dd" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="40" y1="60" x2="580" y2="60" stroke="#efe9dd" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="40" y1="100" x2="580" y2="100" stroke="#efe9dd" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="40" y1="140" x2="580" y2="140" stroke="#efe9dd" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="40" y1="180" x2="580" y2="180" stroke="#6b7a91" stroke-width="1"/>
+
+          <!-- y labels -->
+          <text x="32" y="24" fill="#6b7a91" font-size="10" text-anchor="end" font-family="DM Sans">€400</text>
+          <text x="32" y="64" fill="#6b7a91" font-size="10" text-anchor="end" font-family="DM Sans">€300</text>
+          <text x="32" y="104" fill="#6b7a91" font-size="10" text-anchor="end" font-family="DM Sans">€200</text>
+          <text x="32" y="144" fill="#6b7a91" font-size="10" text-anchor="end" font-family="DM Sans">€100</text>
+          <text x="32" y="184" fill="#6b7a91" font-size="10" text-anchor="end" font-family="DM Sans">€0</text>
+
+          <!-- budget line at €280 -->
+          <line x1="40" y1="68" x2="580" y2="68" stroke="#DF111B" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
+          <text x="575" y="64" fill="#DF111B" font-size="10" text-anchor="end" font-family="DM Sans" font-weight="600">budget €280</text>
+
+          <!-- without caching (background area) -->
+          <path d="M 80 30 L 180 18 L 280 22 L 380 14 L 480 25 L 580 18 L 580 180 L 80 180 Z"
+                fill="#DF111B" fill-opacity="0.06"/>
+          <path d="M 80 30 L 180 18 L 280 22 L 380 14 L 480 25 L 580 18"
+                fill="none" stroke="#DF111B" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>
+
+          <!-- actual spend area -->
+          <path d="M 80 92 L 180 78 L 280 70 L 380 62 L 480 78 L 580 75 L 580 180 L 80 180 Z"
+                fill="#265092" fill-opacity="0.12"/>
+          <path d="M 80 92 L 180 78 L 280 70 L 380 62 L 480 78 L 580 75"
+                fill="none" stroke="#265092" stroke-width="2.5"/>
+
+          <!-- data points -->
+          <circle cx="80" cy="92" r="4" fill="#265092"/>
+          <circle cx="180" cy="78" r="4" fill="#265092"/>
+          <circle cx="280" cy="70" r="4" fill="#265092"/>
+          <circle cx="380" cy="62" r="4" fill="#265092"/>
+          <circle cx="480" cy="78" r="4" fill="#265092"/>
+          <circle cx="580" cy="75" r="4" fill="#265092"/>
+
+          <!-- x labels -->
+          <text x="80" y="195" fill="#6b7a91" font-size="10" text-anchor="middle" font-family="DM Sans">Nov</text>
+          <text x="180" y="195" fill="#6b7a91" font-size="10" text-anchor="middle" font-family="DM Sans">Dec</text>
+          <text x="280" y="195" fill="#6b7a91" font-size="10" text-anchor="middle" font-family="DM Sans">Jan</text>
+          <text x="380" y="195" fill="#6b7a91" font-size="10" text-anchor="middle" font-family="DM Sans">Feb</text>
+          <text x="480" y="195" fill="#6b7a91" font-size="10" text-anchor="middle" font-family="DM Sans">Mar</text>
+          <text x="580" y="195" fill="#6b7a91" font-size="10" text-anchor="middle" font-family="DM Sans" font-weight="700">Apr</text>
+        </svg>
+        <div class="trend-legend">
+          <div class="trend-legend-item"><span class="legend-dot" style="background:#265092;"></span> Actual spend (with caching + tier downgrades)</div>
+          <div class="trend-legend-item"><span class="legend-dot" style="background:#DF111B;opacity:0.6;"></span> Without optimizations</div>
+          <div class="trend-legend-item"><span class="legend-dot" style="background:#DF111B;"></span> Monthly budget cap</div>
+        </div>
+
+        <!-- Circuit Breaker -->
+        <div class="cb-section">
+          <div class="cb-card">
+            <div class="cb-card-title">Circuit breaker</div>
+            <div class="cb-state">
+              <span class="led"></span>
+              ARMED · Closed
+            </div>
+            <div class="cb-meta">آخر تشغيل: <span class="mono">2026-04-02 14:23 UTC</span> (Comms cap exceeded, auto-reset بعد 6 hours)</div>
+          </div>
+          <div class="cb-card">
+            <div class="cb-card-title">Daily cap</div>
+            <div class="cb-state warn">
+              <span class="led"></span>
+              €9.42 / €10.00
+            </div>
+            <div class="cb-meta">94% من الـ daily limit · هينعمل auto-pause لو وصل €10</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Model breakdown -->
+      <div class="panel">
+        <div class="panel-title">
+          🧬 Model tier breakdown
+          <span class="badge">April 2026</span>
+        </div>
+        <div class="model-bars">
+          <div class="model-row">
+            <div class="model-row-header">
+              <div class="model-row-name">Claude Opus 4.7 <span class="pill">Orchestrator only</span></div>
+              <div class="model-row-cost">€52.80</div>
+            </div>
+            <div class="model-row-bar">
+              <div class="model-row-fill" style="width:21%; background:linear-gradient(90deg, #2a3958, #1a3a6c);"></div>
+            </div>
+            <div class="model-row-meta">
+              <span>3,142 calls · 21.2% of total cost</span>
+              <span>$15/M input · $75/M output</span>
+            </div>
+          </div>
+
+          <div class="model-row">
+            <div class="model-row-header">
+              <div class="model-row-name">Claude Sonnet 4.6 <span class="pill">4 sub-agents</span></div>
+              <div class="model-row-cost">€152.85</div>
+            </div>
+            <div class="model-row-bar">
+              <div class="model-row-fill" style="width:61%; background:linear-gradient(90deg, #265092, #3a6bb0);"></div>
+            </div>
+            <div class="model-row-meta">
+              <span>4,985 calls · 61.5% of total cost</span>
+              <span>$3/M input · $15/M output</span>
+            </div>
+          </div>
+
+          <div class="model-row">
+            <div class="model-row-header">
+              <div class="model-row-name">Claude Haiku 4.5 <span class="pill">Repair + downgrades</span></div>
+              <div class="model-row-cost">€43.08</div>
+            </div>
+            <div class="model-row-bar">
+              <div class="model-row-fill" style="width:17%; background:linear-gradient(90deg, #1a7a3e, #4ca96d);"></div>
+            </div>
+            <div class="model-row-meta">
+              <span>3,389 calls · 17.3% of total cost</span>
+              <span>$1/M input · $5/M output</span>
+            </div>
+          </div>
+        </div>
+
+        <hr style="margin:18px 0; border:none; border-top:1px dashed var(--line);">
+
+        <div style="font-size:13px; font-weight:700; color:var(--ink); margin-bottom:8px; font-family:'DM Sans';">💰 Savings this month</div>
+        <div class="savings-row">
+          <div class="label">Prompt caching (68% hit rate)</div>
+          <div class="value">−€87.40</div>
+        </div>
+        <div class="savings-row">
+          <div class="label">Auto-downgrade Sonnet → Haiku (Comms agent)</div>
+          <div class="value">−€34.20</div>
+        </div>
+        <div class="savings-row">
+          <div class="label">Tool result caching (T1 reads)</div>
+          <div class="value">−€18.05</div>
+        </div>
+        <div class="savings-row">
+          <div class="label">Total saved vs. baseline</div>
+          <div class="value" style="font-size:16px;">−€139.65</div>
+        </div>
+        <div class="savings-row">
+          <div class="label" style="color:var(--ink); font-weight:600;">Effective spend after savings</div>
+          <div class="value neutral">€248.73</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RECENT EVENTS -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">سجل أحداث الـ Cost Governance</h2>
+        <div class="section-subtitle">Last 24 hours · audit log immutable, signed Ed25519</div>
+      </div>
+    </div>
+
+    <div class="panel" style="padding:0; overflow-x:auto;">
+      <table class="events-table">
+        <thead>
+          <tr>
+            <th>Time (UTC)</th>
+            <th>Agent</th>
+            <th>Event</th>
+            <th>Details</th>
+            <th style="text-align:right;">Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">14:23:11</td>
+            <td>Comms</td>
+            <td><span class="event-type downgrade">DOWNGRADE</span></td>
+            <td>92% budget used → switching Sonnet 4.6 → Haiku 4.5 for non-critical templates</td>
+            <td style="text-align:right; color:var(--green); font-weight:600;">−€0.34/call</td>
+          </tr>
+          <tr>
+            <td class="mono">11:08:42</td>
+            <td>Shop</td>
+            <td><span class="event-type alert">ALERT</span></td>
+            <td>Crossed 80% budget threshold → notified Rami via WhatsApp</td>
+            <td style="text-align:right;">—</td>
+          </tr>
+          <tr>
+            <td class="mono">09:55:03</td>
+            <td>Orchestrator</td>
+            <td><span class="event-type cache">CACHE HIT</span></td>
+            <td>System prompt cache hit (12,340 tokens) — saved €0.18 on this call</td>
+            <td style="text-align:right; color:var(--green); font-weight:600;">−€0.18</td>
+          </tr>
+          <tr>
+            <td class="mono">08:00:00</td>
+            <td>system</td>
+            <td><span class="event-type alert">ROLLOVER</span></td>
+            <td>Daily budget reset to €10.00 · prior day spent €8.91</td>
+            <td style="text-align:right;">—</td>
+          </tr>
+          <tr>
+            <td class="mono">2d ago</td>
+            <td>Comms</td>
+            <td><span class="event-type cap">CAP HIT</span></td>
+            <td>Daily cap of €2.50 hit at 19:42 → outbound WhatsApp queued, resumed at 06:00</td>
+            <td style="text-align:right; color:var(--red); font-weight:600;">paused 10h</td>
+          </tr>
+          <tr>
+            <td class="mono">3d ago</td>
+            <td>Finance</td>
+            <td><span class="event-type cache">CACHE HIT</span></td>
+            <td>Repeated VAT calc context cached (8,920 tokens × 47 calls)</td>
+            <td style="text-align:right; color:var(--green); font-weight:600;">−€6.20</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <div class="footer-note">
+    <strong>Layer 9 — Cost Governance</strong> · هذا الـ dashboard mockup للعرض البصري فقط.
+    Live version هيتغذى من <code>audit.jsonl</code> + Anthropic Admin API + per-agent budget config.
+    Refresh interval: 60s · Powered by AI Automation System v3 · DR FONE CYPRUS LTD
+  </div>
+
+</div>
+
+</body>
+</html>
