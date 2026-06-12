@@ -20,6 +20,7 @@
 | 6 | إضافة بوابة جديدة + فصل بوابة الخطة عن بوابة الإطلاق العام | 8 |
 | 7 | حسم القرارات الثلاثة + تثبيت الحزمة المرجعية (VPS أونلاين مملوك) | 13 (محسوم) |
 | 8 | تأكيد أن Telegram أيضًا يخضع لنفس Auth + Policy (لا باب مميّز) | 4.7 |
+| 9 | إضافة طبقة **Scale & SaaS Readiness**: multi-tenancy، entitlements، metering، سلّم توسع | 14 (جديد) |
 
 > كل ما لم يُذكر هنا يبقى كما في v1.0 دون تغيير (الطبقات 4.1–4.6، خطة الأشهر الستة، التسويق، التسعير).
 
@@ -254,7 +255,9 @@ No managed-auth PII egress            ← معتمد: Auth = Supabase self-hoste
 | واجهة الـchat (Horizon 2) | **Next.js مخصص (نمط Vercel AI Chatbot)** | تحكم كامل بالحوكمة والعلامة + مسار PWA نظيف للمنتجة |
 | TLS / WAF / Proxy | **Cloudflare أمام Caddy/Nginx** | TLS + حماية + وصول أونلاين عالمي |
 
-### 13.1 الحزمة المرجعية (Reference Stack)
+### 13.1 الحزمة المرجعية (Reference Stack) — Stage 1 (Pilot)
+
+> هذه **المرحلة الأولى** من سلّم التوسع (§14.5). تُبنى الخدمات **stateless + Docker + tenant-aware** من الآن حتى تتوسّع لاحقًا دون إعادة كتابة.
 
 ```text
                 Cloudflare (DNS + TLS + WAF)
@@ -278,6 +281,66 @@ No managed-auth PII egress            ← معتمد: Auth = Supabase self-hoste
 ### 13.2 ملاحظة على الحدود (مهمة)
 
 هذه القرارات **تصميمية ومعتمدة في الخطة**، لكن التنفيذ الفعلي (تجهيز الـVPS، نشر Supabase/LibreChat، ربط DNS، شهادات، credentials) لا يبدأ قبل بوابة `APPROVE_PUBLIC_WEB_CHANNEL_GO_LIVE`. القرار محسوم؛ التنفيذ ينتظر البوابة.
+
+---
+
+## 14. Scale & SaaS Readiness — جاهزية التوسع والـSaaS (جديد)
+
+**المبدأ:** النظام سينتهي كـ **SaaS باستخدامات كبيرة + بيع packages**. لذا نبني بسيطًا الآن لكن بـ«مفاصل» تمنع إعادة الكتابة (Evolutionary Architecture). **ابنِ الرخيص-الآن الذي يحفظ الغالي-لاحقًا.**
+
+### 14.1 Multi-Tenancy — القرار الأهم (يُبنى من اليوم الأول)
+
+- **`tenant_id` في كل جدول وكل طلب وكل سجل audit** — منذ أول سطر كود.
+- DRFONE نفسها = **Tenant 0** (أول مستأجر، لا حالة خاصة).
+- العزل عبر **Postgres RLS** (row-level security per tenant) في المرحلة المشتركة.
+- نموذج هجين حسب الباقة:
+  - **Starter / Business** → shared instance + عزل بالـRLS.
+  - **Enterprise / Private** → dedicated instance أو local mode (يطابق باقة Enterprise في v1.0).
+- تحويل single-tenant → multi-tenant لاحقًا = إعادة كتابة خطيرة، لذا نتجنبه بالبناء الصحيح الآن.
+
+### 14.2 Entitlements & Package Mapping
+
+- الباقات (Starter/Business/Enterprise) = **مجموعات صلاحيات/إضافات (feature flags + plugin sets) لكل tenant**.
+- طبقة entitlements مركزية تقرأها كل القنوات والقلب (لا فحص باقة متناثر).
+- ربط مباشر مع §4.7 (Policy Engine يقرأ tenant + tier + role + classification).
+
+### 14.3 Metering & Billing
+
+- **عدّاد استخدام per-tenant** من اليوم الأول (رسائل، مهام، tokens) — حتى لو لم نُفعّل الفوترة بعد.
+- حدود/حصص (quotas) per tier لمنع تجاوز التكلفة.
+- تكامل فوترة لاحق (مثل Stripe) — يُجهّز كـseam، يُفعّل في Horizon 2.
+
+### 14.4 Statelessness & Containerization (مسار التوسع)
+
+- الـbackend **stateless + 12-factor + Docker** من الآن → يسمح بالانتقال من VPS واحد إلى عدة نسخ/تنسيق حاويات دون إعادة كتابة.
+- الحالة كلها في Postgres / Storage / Cache، لا في ذاكرة العملية.
+- مهام الوكلاء الطويلة عبر **queue (async jobs)** — يُجهّز كـseam مبكرًا.
+
+### 14.5 سلّم التوسع (Scaling Ladder)
+
+| المرحلة | البنية | متى |
+|---|---|---|
+| Stage 1 — Pilot | VPS واحد (الحزمة المرجعية §13) | Horizon 1 — DRFONE داخليًا |
+| Stage 2 — أول عملاء | فصل الخدمات + managed/clustered Postgres + object storage + cache + queue | Horizon 2 — أول 3 عملاء |
+| Stage 3 — SaaS بمقياس | تنسيق حاويات + auto-scaling + per-region + multi-region residency | عند الطلب الحقيقي |
+
+> لا نبني Stage 2/3 الآن — لكن لا نتّخذ أي قرار في Stage 1 يمنعهما.
+
+### 14.6 Observability & Admin (احترافي + قابل للبيع)
+
+- **Per-tenant usage analytics + admin console** (يطابق توصية دليل Anthropic: admin marketplace, role-based access, spend controls, usage analytics).
+- **OpenTelemetry** للمراقبة والتدقيق القابل للتنظيم — جاهزية تنظيمية للبيع.
+- لوحة admin للتحكم بالإضافات المتاحة per-tenant (plugin governance).
+
+### 14.7 ملخص «صمّم الآن مقابل ابنِ لاحقًا»
+
+| صمّم/ابنِ الآن (رخيص، يمنع إعادة الكتابة) | أجّل (غالٍ، يُبنى عند الطلب) |
+|---|---|
+| `tenant_id` + RLS في كل شيء | dedicated instances per enterprise |
+| stateless + Docker | تنسيق حاويات / auto-scaling |
+| طبقة entitlements + عدّاد استخدام | تكامل فوترة كامل / multi-region |
+| seams للـqueue والـcache | clustering فعلي للـPostgres |
+| Policy Engine يقرأ tenant+tier | admin console كامل الميزات |
 
 ---
 
