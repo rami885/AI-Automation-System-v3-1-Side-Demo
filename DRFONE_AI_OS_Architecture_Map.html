@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRFONE AI Business OS — الخريطة المعمارية v1.1</title>
+<style>
+  :root{
+    --bg:#0b1020; --panel:#121a32; --panel2:#172244; --line:#2b3a66;
+    --ink:#eaf0ff; --mut:#9fb0d8; --accent:#4da3ff; --accent2:#7c5cff;
+    --green:#33d18f; --amber:#ffb84d; --red:#ff6b6b; --pink:#ff79c6;
+    --chip:#1d2a52;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#070b18,#0b1020 40%);
+    color:var(--ink);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 18px 70px}
+  header.top{text-align:center;padding:18px 0 8px}
+  header.top h1{margin:0;font-size:30px;letter-spacing:.3px}
+  header.top .sub{color:var(--mut);margin-top:6px;font-size:15px}
+  .badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .badge{background:var(--chip);border:1px solid var(--line);color:var(--mut);
+    padding:5px 12px;border-radius:999px;font-size:12.5px}
+  .badge.hold{color:var(--amber);border-color:#5a4a1f;background:#241d0c}
+  h2.sec{font-size:20px;margin:38px 0 14px;padding-right:12px;
+    border-right:4px solid var(--accent);}
+  .lead{color:var(--mut);font-size:14px;margin:-6px 0 16px}
+  /* flow */
+  .flow{display:flex;flex-direction:column;gap:0;align-items:center}
+  .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;width:100%}
+  .node{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:14px 16px;min-width:150px;text-align:center;flex:1;max-width:240px}
+  .node .t{font-weight:700;font-size:15px}
+  .node .d{color:var(--mut);font-size:12px;margin-top:4px}
+  .node.core{background:linear-gradient(180deg,#16224a,#101a38);
+    border-color:var(--accent);box-shadow:0 0 0 1px #1f3a7a inset}
+  .node.policy{border-color:var(--accent2);background:linear-gradient(180deg,#1c1740,#141031)}
+  .node.brain{border-color:var(--green);background:#0f2a22}
+  .arrow{color:var(--accent);font-size:22px;margin:6px 0;opacity:.85}
+  .chan .node{max-width:200px}
+  .chan .tg{border-color:#3aa0ff}
+  .chan .web{border-color:#7c5cff}
+  .chan .pwa{border-color:var(--pink)}
+  .chan .fut{border-style:dashed;color:var(--mut)}
+  .note{background:#0e1730;border:1px dashed var(--line);border-radius:12px;
+    padding:12px 14px;color:var(--mut);font-size:13px;margin-top:14px}
+  .note b{color:var(--ink)}
+  /* grid cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .card h3{margin:0 0 8px;font-size:15.5px;display:flex;align-items:center;gap:8px}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+  .card ul{margin:6px 0 0;padding-right:18px}
+  .card li{font-size:13px;color:var(--mut);margin:4px 0}
+  .card li b{color:var(--ink)}
+  /* table */
+  table{width:100%;border-collapse:collapse;margin-top:6px;font-size:13px;
+    background:var(--panel);border-radius:12px;overflow:hidden}
+  th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line)}
+  th{background:var(--panel2);color:var(--ink);font-size:13px}
+  td{color:var(--mut)}
+  .yes{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .esc{color:var(--amber);font-weight:700}
+  /* ladder */
+  .ladder{display:flex;gap:12px;flex-wrap:wrap}
+  .stage{flex:1;min-width:240px;background:var(--panel);border:1px solid var(--line);
+    border-radius:14px;padding:16px;position:relative}
+  .stage .tag{position:absolute;top:-10px;right:14px;background:var(--accent);
+    color:#04122b;font-weight:700;font-size:11px;padding:3px 10px;border-radius:999px}
+  .stage.s1 .tag{background:var(--green);color:#04211a}
+  .stage.s2 .tag{background:var(--amber);color:#241a04}
+  .stage.s3 .tag{background:var(--accent2);color:#0e0a2b}
+  .stage h3{margin:8px 0 6px;font-size:15px}
+  .stage p{margin:0;color:var(--mut);font-size:13px}
+  .stage .when{margin-top:8px;font-size:12px;color:var(--accent)}
+  /* horizon */
+  .horizon{display:flex;gap:12px;flex-wrap:wrap}
+  .hz{flex:1;min-width:260px;border-radius:14px;padding:16px;border:1px solid var(--line)}
+  .hz.h1{background:linear-gradient(180deg,#0f2a22,#0c1f1a);border-color:#1f5c46}
+  .hz.h2{background:linear-gradient(180deg,#1c1740,#141031);border-color:#3a2f73}
+  .hz h3{margin:0 0 8px;font-size:16px}
+  .hz ul{margin:6px 0 0;padding-right:18px}
+  .hz li{font-size:13px;color:var(--mut);margin:4px 0}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--mut)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  footer{margin-top:46px;text-align:center;color:var(--mut);font-size:12px;
+    border-top:1px solid var(--line);padding-top:16px}
+  .pill{display:inline-block;background:var(--chip);border:1px solid var(--line);
+    border-radius:8px;padding:2px 8px;font-size:12px;color:var(--mut);margin:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>DRFONE AI Business Operating System</h1>
+    <div class="sub">الخريطة المعمارية البصرية — النسخة v1.1</div>
+    <div class="badges">
+      <span class="badge">دماغ واحد · عدة واجهات</span>
+      <span class="badge">الصلاحيات server-side</span>
+      <span class="badge">Multi-tenant جاهز للـSaaS</span>
+      <span class="badge hold">HOLD · تصميم وحوكمة فقط — لا نشر</span>
+    </div>
+  </header>
+
+  <!-- 1) BIG PICTURE -->
+  <h2 class="sec">١) الصورة الكبيرة — كيف يشتغل النظام</h2>
+  <p class="lead">كل القنوات تدخل من نفس الباب، تمرّ بالمصادقة والصلاحيات، ثم القلب الواحد يدير كل شيء. إضافة قناة جديدة لا تلمس الحوكمة.</p>
+
+  <div class="flow">
+    <div class="row chan">
+      <div class="node tg"><div class="t">📱 Telegram</div><div class="d">أوامر رامي (Horizon 1)</div></div>
+      <div class="node web"><div class="t">🌐 Web UI</div><div class="d">ai.drfone.eu — تسجيل دخول → chat</div></div>
+      <div class="node pwa"><div class="t">📲 PWA موبايل</div><div class="d">نفس الواجهة على الجوال</div></div>
+      <div class="node fut"><div class="t">➕ قنوات مستقبلية</div><div class="d">WhatsApp / API …</div></div>
+    </div>
+    <div class="arrow">▼</div>
+    <div class="row">
+      <div class="node"><div class="t">🔌 Channel Adapter</div><div class="d">تطبيع كل طلب إلى صيغة موحّدة (Canonical Schema)</div></div>
+    </div>
+    <div class="arrow">▼</div>
+    <div class="row">
+      <div class="node policy"><div class="t">🛡️ Auth + Policy Engine</div><div class="d">هوية + دور + باقة + تصنيف بيانات + قناة<br>(القرار يُتخذ هنا — server-side)</div></div>
+    </div>
+    <div class="arrow">▼</div>
+    <div class="row">
+      <div class="node core"><div class="t">🧠 AI Operation Room — Core</div><div class="d">بوابات أمان · توجيه · تدقيق (audit)</div></div>
+    </div>
+    <div class="arrow">▼</div>
+    <div class="row">
+      <div class="node"><div class="t">⚙️ Claude Code</div><div class="d">المنسّق: يقسّم المهام ويراجع</div></div>
+      <div class="node brain"><div class="t">📚 Knowledge + Memory</div><div class="d">معرفة DRFONE + ذاكرة الوكيل</div></div>
+      <div class="node"><div class="t">🔧 Tools / n8n / Kanboard</div><div class="d">تنفيذ · تقارير · لوحة متابعة</div></div>
+    </div>
+    <div class="note"><b>المبدأ:</b> القنوات «غبية» — القلب والحوكمة موجودان مرة واحدة. حتى Telegram يمرّ بنفس المصادقة (لا باب مميّز).</div>
+  </div>
+
+  <!-- 2) ACCESS / TRUST -->
+  <h2 class="sec">٢) من يرى ماذا — حدود الثقة (Trust Boundary)</h2>
+  <p class="lead">القرار ليس بالدور فقط، بل: <b>الدور × تصنيف البيانات × القناة</b>. الافتراضي = رفض.</p>
+  <table>
+    <thead><tr>
+      <th>المورد \ القناة</th>
+      <th>Telegram (رامي)</th>
+      <th>Web داخلي (موظف)</th>
+      <th>Web عام (عميل)</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>عام (public)</td><td class="yes">✓ مسموح</td><td class="yes">✓ مسموح</td><td class="yes">✓ مسموح</td></tr>
+      <tr><td>داخلي (internal)</td><td class="yes">✓</td><td class="yes">✓ حسب الدور</td><td class="no">✗ ممنوع</td></tr>
+      <tr><td>سرّي (confidential)</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td></tr>
+      <tr><td>مالي/خاص (rami_private)</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td></tr>
+    </tbody>
+  </table>
+  <div class="legend">
+    <span><span class="yes">✓</span> مسموح server-side</span>
+    <span><span class="no">✗</span> مرفوض</span>
+    <span><span class="esc">⤴︎</span> طلب حساس من قناة عامة = يُصعّد لموافقة رامي على Telegram (Escalation Gate)</span>
+  </div>
+
+  <!-- 3) STACK -->
+  <h2 class="sec">٣) الحزمة التقنية المعتمدة (online · تملك بياناتك)</h2>
+  <p class="lead">VPS واحد أونلاين = وصول من أي مكان + البيانات تبقى عندك. لا سحابة مُدارة تأخذ بياناتك.</p>
+  <div class="grid">
+    <div class="card"><h3><span class="dot" style="background:var(--accent)"></span>الاستضافة</h3>
+      <ul><li><b>Hostinger VPS</b> — أونلاين، تملّك كامل</li><li>Cloudflare (DNS + TLS + WAF) في المقدمة</li></ul></div>
+    <div class="card"><h3><span class="dot" style="background:var(--green)"></span>الهوية + البيانات</h3>
+      <ul><li><b>Supabase self-hosted</b></li><li>Auth + Postgres + Storage + RLS + Audit</li></ul></div>
+    <div class="card"><h3><span class="dot" style="background:var(--pink)"></span>واجهة المحادثة</h3>
+      <ul><li><b>الآن:</b> LibreChat (جاهزة)</li><li><b>لاحقًا:</b> Next.js مخصص + PWA</li></ul></div>
+    <div class="card"><h3><span class="dot" style="background:var(--accent2)"></span>القلب</h3>
+      <ul><li>Backend stateless + Docker</li><li>Channel Adapter + Policy Engine</li><li>Claude Code Orchestration</li></ul></div>
+  </div>
+
+  <!-- 4) SCALING LADDER -->
+  <h2 class="sec">٤) مسار النمو نحو SaaS — لا إعادة كتابة لاحقًا</h2>
+  <p class="lead">نبني بسيطًا الآن لكن بـ«مفاصل»: <b>tenant_id من اليوم الأول</b> + stateless + Docker. DRFONE = Tenant 0.</p>
+  <div class="ladder">
+    <div class="stage s1"><span class="tag">المرحلة ١ — الآن</span>
+      <h3>Pilot</h3>
+      <p>VPS واحد · خدمات مُحوّاة (Docker) · tenant-aware من البداية.</p>
+      <div class="when">Horizon 1 — DRFONE داخليًا</div></div>
+    <div class="stage s2"><span class="tag">المرحلة ٢</span>
+      <h3>أول عملاء</h3>
+      <p>فصل الخدمات · Postgres مُدار/عنقودي · object storage · cache · queue.</p>
+      <div class="when">Horizon 2 — أول ٣ عملاء</div></div>
+    <div class="stage s3"><span class="tag">المرحلة ٣</span>
+      <h3>SaaS بمقياس</h3>
+      <p>تنسيق حاويات · auto-scaling · multi-region · فوترة كاملة.</p>
+      <div class="when">عند الطلب الحقيقي</div></div>
+  </div>
+  <div class="grid" style="margin-top:14px">
+    <div class="card"><h3>🏢 Multi-Tenancy</h3>
+      <ul><li><b>tenant_id</b> في كل جدول/طلب/سجل</li><li>عزل عبر Postgres RLS</li><li>Enterprise = نسخة خاصة/محلية</li></ul></div>
+    <div class="card"><h3>📦 الباقات</h3>
+      <ul><li>Starter / Business / Enterprise</li><li>= مجموعات صلاحيات (entitlements) لكل tenant</li></ul></div>
+    <div class="card"><h3>📊 العدّاد والفوترة</h3>
+      <ul><li>عدّاد استخدام per-tenant من الآن</li><li>حصص (quotas) · Stripe لاحقًا</li></ul></div>
+  </div>
+
+  <!-- 5) HORIZONS -->
+  <h2 class="sec">٥) خارطة الطريق — أفقان</h2>
+  <div class="horizon">
+    <div class="hz h1"><h3>🟢 Horizon 1 (٠–٦ أشهر) — إثبات داخلي</h3>
+      <ul>
+        <li>3 تجارب: التقرير اليومي · كتالوج المنتجات · مساعد الردود</li>
+        <li>champion pilot مع موظف + Web UI داخلي</li>
+        <li>أرقام حقيقية: وقت موفّر · adoption · جودة</li>
+      </ul></div>
+    <div class="hz h2"><h3>🟣 Horizon 2 (٦–١٢ شهر) — المنتجة والبيع</h3>
+      <ul>
+        <li>تغليف الخبرة كـ plugins قابلة للبيع</li>
+        <li>ai.drfone.eu عام + واجهة مخصصة + PWA</li>
+        <li>أول ٣ عملاء يدفعون</li>
+      </ul></div>
+  </div>
+
+  <!-- GATES -->
+  <h2 class="sec">٦) البوابات — لا شيء يُنشر بدون موافقتك</h2>
+  <div class="card">
+    <p style="margin:0 0 8px;color:var(--mut);font-size:13px">القرارات معتمدة في الخطة، لكن <b style="color:var(--ink)">التنفيذ الفعلي</b> (تجهيز VPS · نشر · DNS · credentials) ينتظر بوابة منفصلة:</p>
+    <span class="pill">✅ APPROVE_CHANNEL_AGNOSTIC_CORE_..._V1_1 (تصميم)</span>
+    <span class="pill" style="color:var(--amber);border-color:#5a4a1f">⏳ APPROVE_PUBLIC_WEB_CHANNEL_GO_LIVE (الإطلاق العام)</span>
+    <span class="pill" style="color:var(--red);border-color:#5a2222">⛔ لا DNS لـ ai.drfone.eu قبل البوابة</span>
+  </div>
+
+  <footer>
+    DRFONE AI Business OS — v1.1 · خريطة بصرية للمراجعة · الحالة: HOLD_PENDING_RAMI_REVIEW
+  </footer>
+
+</div>
+</body>
+</html>
