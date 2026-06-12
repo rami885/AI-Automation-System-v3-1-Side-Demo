@@ -1,0 +1,19 @@
+{
+  "name": "drfone-ai-os-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "DRFONE AI Business OS — Channel-agnostic core: Canonical Schema + Policy Engine + Audit. Local skeleton, no deployment.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && node --test \"dist/test/*.test.js\"",
+    "demo": "tsc -p tsconfig.json && node dist/src/demo.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.21"
+  }
+}
