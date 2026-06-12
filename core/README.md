@@ -10,13 +10,16 @@
 | A2 | Canonical Message Schema + تحقق | `src/schema/canonical.ts` |
 | A3 | Policy Engine (PDP): الدور × التصنيف × القناة، افتراضي = رفض | `src/policy/policy-engine.ts`, `src/policy/classification.ts` |
 | A4 (أساس) | Audit append-only + hash-chain | `src/audit/audit.ts` |
-| القلب | AI Operation Room: validate → decide → audit | `src/core/operation-room.ts` |
+| A5 | طبقة هوية + محوّل Telegram (وضع اختبار، بلا إرسال) | `src/auth/identity-directory.ts`, `src/channels/telegram.ts` |
+| A6 | المعرفة + تجربة Daily Operations Brief (قراءة فقط) | `src/knowledge/knowledge-base.ts`, `src/pilots/daily-brief.ts` |
+| القلب | AI Operation Room + composition root | `src/core/operation-room.ts`, `src/app/build-app.ts` |
 
 ## التشغيل
 
 ```bash
 npm install      # يثبّت @types/node فقط (لا تبعيات تشغيل)
-npm test         # يبني ويشغّل 16 اختبارًا
+npm test         # يبني ويشغّل 22 اختبارًا
+npm run demo     # عرض توضيحي محلي للتدفّق كاملًا
 npm run typecheck
 ```
 
@@ -29,8 +32,8 @@ npm run typecheck
 - **العميل**: لا يتجاوز `public` على أي قناة.
 - **التدقيق**: كل قرار (بما فيه الرفض والتصعيد) يُسجَّل في سلسلة هاش غير قابلة للتلاعب.
 
-## ما هو **ليس** هنا بعد (خطوات لاحقة)
+## ما هو **ليس** هنا بعد (المرحلة B — تحتاج بوابة)
 
-- A5: محوّل Telegram (وضع اختبار، بلا إرسال حيّ).
-- A6: أول تجربة — Daily Operations Brief فوق المعرفة المحلية.
-- ربط Supabase/Postgres كـsink فعلي للـaudit والهوية (المرحلة B — تحتاج بوابة).
+- إرسال Telegram الحيّ (token + Bot API).
+- ربط Supabase/Postgres كـsink فعلي للـaudit والهوية بدل النسخة في الذاكرة.
+- Web UI داخلي (LibreChat) + ربط المعرفة بملفات DRFONE الحقيقية.
