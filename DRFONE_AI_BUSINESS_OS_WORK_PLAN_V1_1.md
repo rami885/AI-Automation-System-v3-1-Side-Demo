@@ -18,7 +18,7 @@
 | 4 | تحويل التفويض من RBAC فقط إلى **RBAC × Data Classification × Channel** (ABAC) | 4.5، 4.7 |
 | 5 | توسيع Audit ليكون append-only ويسجّل القناة + حالات الرفض + سبب القرار | 4.5، 4.7 |
 | 6 | إضافة بوابة جديدة + فصل بوابة الخطة عن بوابة الإطلاق العام | 8 |
-| 7 | إضافة سجل القرارات المفتوحة (auth provider، الاستضافة) | 13 (جديد) |
+| 7 | حسم القرارات الثلاثة + تثبيت الحزمة المرجعية (VPS أونلاين مملوك) | 13 (محسوم) |
 | 8 | تأكيد أن Telegram أيضًا يخضع لنفس Auth + Policy (لا باب مميّز) | 4.7 |
 
 > كل ما لم يُذكر هنا يبقى كما في v1.0 دون تغيير (الطبقات 4.1–4.6، خطة الأشهر الستة، التسويق، التسعير).
@@ -235,22 +235,49 @@ No employee access expansion
 No cloud sensitive data
 No n8n publish/activation
 No public DNS for ai.drfone.eu        ← جديد (حتى APPROVE_PUBLIC_WEB_CHANNEL_GO_LIVE)
-No managed-auth PII egress            ← جديد (حتى حسم سجل القرارات §13)
+No managed-auth PII egress            ← معتمد: Auth = Supabase self-hosted على VPS (لا خروج PII)
 ```
 
 > **فصل البوابتين:** اعتماد الخطة (`..._V1_1`) لا يعني الإطلاق العام. ai.drfone.eu لا يُنشر ولا يُربط DNS قبل `APPROVE_PUBLIC_WEB_CHANNEL_GO_LIVE`.
 
 ---
 
-## 13. سجل القرارات المفتوحة (جديد)
+## 13. سجل القرارات — محسوم (v1.1)
 
-| القرار | الخيارات | معيار الحسم | الحالة |
-|---|---|---|---|
-| Auth Provider | Keycloak (self-host) / Supabase (cloud أو self-host) / Clerk (cloud) | سيادة البيانات: managed يعني خروج PII الهوية لسحابتهم؛ self-host أكثر اتساقًا مع فلسفة الخصوصية | مفتوح — يُحسم بعد تحديد الاستضافة |
-| مكان الـ backend | Hostinger VPS / سيرفر مستقل / بيئة أخرى | يحدّد خيار الـ auth وحدود الثقة | مفتوح |
-| الواجهة الجاهزة | LibreChat / Open WebUI / Vercel AI Chatbot | طريقة الربط + المصادقة + قابلية التخصيص + عدم تجاوز الحوكمة | مفتوح — تقييم في Horizon 1 |
+تم حسم القرارات الثلاثة المفتوحة بتفويض من رامي، بمعيار: **online ومتاح من أي مكان + سيادة البيانات**. الحل: **VPS واحد أونلاين تملكه** يجمع الوصول من أي مكان مع بقاء البيانات تحت سيطرتك.
 
-> توصية: بما أن فلسفة DRFONE متشددة في سيادة البيانات، الترجيح المبدئي **Keycloak أو Supabase self-hosted على نفس الـ VPS** — للتأكيد بعد حسم الاستضافة.
+| القرار | الاختيار المعتمد | السبب |
+|---|---|---|
+| مكان الـ backend | **Hostinger VPS** (أونلاين) | وصول من أي مكان + ملكية كاملة للبيانات؛ سحابة مُدارة تكسر الميزة البيعية الأساسية (الخصوصية) |
+| Auth + DB | **Supabase self-hosted على نفس الـVPS** | Auth + Postgres + Storage + RLS في حزمة واحدة أونلاين مملوكة؛ يخدم أيضًا الـaudit والمعرفة؛ قطع متحركة أقل من Keycloak |
+| واجهة الـchat (Horizon 1) | **LibreChat** self-hosted | جاهزة، أونلاين، متعددة المستخدمين، custom endpoints، بعلامتك — أسرع إطلاق داخلي |
+| واجهة الـchat (Horizon 2) | **Next.js مخصص (نمط Vercel AI Chatbot)** | تحكم كامل بالحوكمة والعلامة + مسار PWA نظيف للمنتجة |
+| TLS / WAF / Proxy | **Cloudflare أمام Caddy/Nginx** | TLS + حماية + وصول أونلاين عالمي |
+
+### 13.1 الحزمة المرجعية (Reference Stack)
+
+```text
+                Cloudflare (DNS + TLS + WAF)
+                          │
+              Caddy / Nginx reverse proxy
+                          │
+   ┌──────────────────────┼──────────────────────┐
+   │                      │                       │
+ LibreChat            Backend API            Supabase (self-hosted)
+ (Web/PWA UI)     (Channel Adapter +         Auth + Postgres +
+ ai.drfone.eu     Policy Engine + Core)      Storage + RLS + Audit
+                          │
+                  Claude Code Orchestration
+                          │
+          Local AI Brain / Knowledge / Agent Memory
+                  ── كل ما سبق على Hostinger VPS ──
+```
+
+> **بديل احتياطي للسرعة فقط:** إن لزم إطلاق pilot سريع قبل تجهيز self-host، يجوز استخدام Supabase Cloud (منطقة EU) **لبيانات غير حساسة فقط**، مع الهجرة إلى self-host قبل ربط أي بيانات حساسة. الافتراضي يبقى self-host.
+
+### 13.2 ملاحظة على الحدود (مهمة)
+
+هذه القرارات **تصميمية ومعتمدة في الخطة**، لكن التنفيذ الفعلي (تجهيز الـVPS، نشر Supabase/LibreChat، ربط DNS، شهادات، credentials) لا يبدأ قبل بوابة `APPROVE_PUBLIC_WEB_CHANNEL_GO_LIVE`. القرار محسوم؛ التنفيذ ينتظر البوابة.
 
 ---
 
