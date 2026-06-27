@@ -9,6 +9,15 @@
 - Codex بيوصل لـ backend على: **`agent.drfone.eu`**.
 - النتيجة: **`Forbidden: this endpoint requires a trusted...`** (الأغلب `trusted origin` أو `trusted client`) — وهي **HTTP 403** من السيرفر نفسه، مش من الواجهة.
 
+### دليل مهم: الخطأ مستقل عن الـ agent
+
+جُرّب نفس الإشي بنفس البيئة (`DRFONE-Ai` / مجلد `drfone`) مع **Codex** و **Claude Code** — وطلع **نفس الـ 403 بالضبط** بالحالتين.
+
+**الاستنتاج:** السبب **server-side / إعداد بيئة**، مش من نوع الـ agent ولا من الـ client. الرفض بيصير **قبل** ما يشتغل أي agent — يعني نقطة الاتصال بالبيئة (`agent.drfone.eu`) بترفض أي client مش "trusted" عند المصافحة الأولى. ركّز التشخيص على:
+- إعداد البيئة بالتطبيق (هل بترسل الـ auth token / trusted header المطلوب؟).
+- الـ trusted-origin / IP allowlist على سيرفر `agent.drfone.eu`.
+- صلاحية/انتهاء الـ token.
+
 ## المطلوب (نفّذ بالترتيب — لا تعدّل أي شي قبل ما تفهم السبب)
 
 1. **لاقي الـ endpoint المسؤول عن "Omni Doctor Fund"**
