@@ -1,0 +1,66 @@
+{
+ "nodes": [
+  {
+   "name": "Strava Trigger",
+   "type": "n8n-nodes-base.stravaTrigger",
+   "position": [
+    470,
+    300
+   ],
+   "parameters": {
+    "event": "create",
+    "options": {}
+   },
+   "credentials": {
+    "stravaOAuth2Api": {
+     "name": "strava"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Beeminder",
+   "type": "n8n-nodes-base.beeminder",
+   "position": [
+    670,
+    300
+   ],
+   "parameters": {
+    "goalName": "testing",
+    "additionalFields": {
+     "comment": "={{$json[\"object_data\"][\"name\"]}}"
+    }
+   },
+   "credentials": {
+    "beeminderApi": {
+     "name": "Beeminder credentials"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Strava Trigger": {
+   "main": [
+    [
+     {
+      "node": "Beeminder",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "New Workflow/900-add-a-datapoint-to-beeminder-on-strava-activity-update/workflow.json",
+   "id": "12-0301"
+  }
+ },
+ "settings": {},
+ "name": "Beeminder + Strava Event-Triggered Automation"
+}

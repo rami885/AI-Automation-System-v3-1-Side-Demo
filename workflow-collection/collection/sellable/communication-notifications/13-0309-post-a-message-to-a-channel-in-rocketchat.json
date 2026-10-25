@@ -1,0 +1,58 @@
+{
+ "name": "Post a message to a channel in RocketChat",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    250,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Rocketchat",
+   "type": "n8n-nodes-base.rocketchat",
+   "position": [
+    450,
+    300
+   ],
+   "parameters": {
+    "text": "Hello everyone",
+    "channel": "#general",
+    "options": {},
+    "attachments": []
+   },
+   "credentials": {
+    "rocketchatApi": {
+     "name": "Rocket"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Rocketchat",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/1189_Manual_Rocketchat_Send_Triggered.json",
+   "id": "13-0309"
+  }
+ }
+}

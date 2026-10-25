@@ -1,0 +1,36 @@
+{
+ "name": "Auto Reply Slack Bot",
+ "nodes": [
+  {
+   "parameters": {},
+   "name": "Slack Trigger",
+   "type": "n8n-nodes-base.slackTrigger"
+  },
+  {
+   "parameters": {
+    "prompt": "Reply to the user in friendly tone"
+   },
+   "name": "OpenAI",
+   "type": "n8n-nodes-base.openai"
+  }
+ ],
+ "connections": {
+  "Slack Trigger": {
+   "main": [
+    [
+     "OpenAI"
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/auto-reply-slack.json",
+   "id": "13-0194"
+  }
+ },
+ "settings": {}
+}

@@ -1,0 +1,71 @@
+{
+ "name": "Receive updates when an email is bounced or opened",
+ "nodes": [
+  {
+   "name": "Postmark Trigger",
+   "type": "n8n-nodes-base.postmarkTrigger",
+   "position": [
+    690,
+    260
+   ],
+   "parameters": {
+    "events": [
+     "bounce",
+     "open"
+    ],
+    "includeContent": true
+   },
+   "credentials": {
+    "postmarkApi": {
+     "name": "postmark"
+    }
+   },
+   "typeVersion": 1,
+   "id": "a7371d75-4da7-44aa-b1a4-e2057e7a35f9",
+   "notes": "This postmarkTrigger node performs automated tasks as part of the workflow."
+  },
+  {
+   "id": "error-d96e8088",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3,
+  "retryDelay": 1000
+ },
+ "connections": {},
+ "description": "Automated workflow: Receive updates when an email is bounced or opened. This workflow processes data and performs automated tasks.",
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Postmark/0968_Postmark_Update_Triggered.json",
+   "id": "03-0214"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "notes": "Excellent quality workflow: Receive updates when an email is bounced or opened. This workflow has been optimized for production use with comprehensive error handling, security, and documentation."
+}

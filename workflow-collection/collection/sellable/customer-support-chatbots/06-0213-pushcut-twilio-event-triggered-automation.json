@@ -1,0 +1,64 @@
+{
+ "nodes": [
+  {
+   "name": "Pushcut Trigger",
+   "type": "n8n-nodes-base.pushcutTrigger",
+   "position": [
+    470,
+    300
+   ],
+   "parameters": {
+    "actionName": "Leaving Home"
+   },
+   "credentials": {
+    "pushcutApi": {
+     "name": "Pushcut Credentials"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Twilio",
+   "type": "n8n-nodes-base.twilio",
+   "position": [
+    670,
+    300
+   ],
+   "parameters": {
+    "to": "123",
+    "from": "123",
+    "message": "=I'm {{$node[\"Pushcut Trigger\"].json[\"input\"]}}"
+   },
+   "credentials": {
+    "twilioApi": {
+     "name": "twilio"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Pushcut Trigger": {
+   "main": [
+    [
+     {
+      "node": "Twilio",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "New Workflow/870-send-an-sms-to-a-number-whenever-you-go-out/workflow.json",
+   "id": "06-0213"
+  }
+ },
+ "settings": {},
+ "name": "Pushcut + Twilio Event-Triggered Automation"
+}

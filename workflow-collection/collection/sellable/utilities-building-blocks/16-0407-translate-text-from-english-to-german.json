@@ -1,0 +1,57 @@
+{
+ "name": "Translate text from English to German",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    270,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Google Translate",
+   "type": "n8n-nodes-base.googleTranslate",
+   "position": [
+    470,
+    300
+   ],
+   "parameters": {
+    "text": "Hello from n8n!",
+    "translateTo": "de",
+    "authentication": "oAuth2"
+   },
+   "credentials": {
+    "googleTranslateOAuth2Api": {
+     "name": "google-translate"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Google Translate",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/1200_Manual_Googletranslate_Automation_Triggered.json",
+   "id": "16-0407"
+  }
+ }
+}

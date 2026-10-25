@@ -1,0 +1,60 @@
+{
+ "name": "Get the current weather data for a city",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    250,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "OpenWeatherMap",
+   "type": "n8n-nodes-base.openWeatherMap",
+   "position": [
+    450,
+    300
+   ],
+   "parameters": {
+    "cityName": "berlin,de"
+   },
+   "credentials": {
+    "openWeatherMapApi": {
+     "name": "openWeatherMapApi account"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "OpenWeatherMap": {
+   "main": [
+    []
+   ]
+  },
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "OpenWeatherMap",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/1173_Manual_Openweathermap_Import_Triggered.json",
+   "id": "16-0365"
+  }
+ }
+}

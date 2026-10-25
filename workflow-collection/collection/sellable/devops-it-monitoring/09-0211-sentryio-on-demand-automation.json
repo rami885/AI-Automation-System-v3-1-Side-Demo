@@ -1,0 +1,95 @@
+{
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    210,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Sentry.io",
+   "type": "n8n-nodes-base.sentryIo",
+   "position": [
+    410,
+    300
+   ],
+   "parameters": {
+    "url": "",
+    "version": "0.0.1",
+    "projects": [
+     ""
+    ],
+    "resource": "release",
+    "operation": "create",
+    "additionalFields": {},
+    "organizationSlug": ""
+   },
+   "credentials": {
+    "sentryIoApi": {
+     "name": "sentry"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Sentry.io1",
+   "type": "n8n-nodes-base.sentryIo",
+   "position": [
+    610,
+    300
+   ],
+   "parameters": {
+    "resource": "release",
+    "operation": "getAll",
+    "returnAll": true,
+    "additionalFields": {},
+    "organizationSlug": ""
+   },
+   "credentials": {
+    "sentryIoApi": {
+     "name": "sentry"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Sentry.io": {
+   "main": [
+    [
+     {
+      "node": "Sentry.io1",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Sentry.io",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "automation/643-get-all-releases-in-sentry/workflow.json",
+   "id": "09-0211"
+  }
+ },
+ "settings": {},
+ "name": "Sentryio On-Demand Automation"
+}

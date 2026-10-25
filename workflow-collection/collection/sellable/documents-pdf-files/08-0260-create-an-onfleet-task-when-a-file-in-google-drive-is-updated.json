@@ -1,0 +1,61 @@
+{
+ "name": "Create an Onfleet task when a file in Google Drive is updated",
+ "nodes": [
+  {
+   "name": "Google Drive Trigger",
+   "type": "n8n-nodes-base.googleDriveTrigger",
+   "position": [
+    460,
+    300
+   ],
+   "parameters": {
+    "pollTimes": {
+     "item": [
+      {
+       "mode": "everyMinute"
+      }
+     ]
+    },
+    "triggerOn": "specificFile",
+    "fileToWatch": "<some_id>"
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Onfleet",
+   "type": "n8n-nodes-base.onfleet",
+   "position": [
+    680,
+    300
+   ],
+   "parameters": {
+    "operation": "create",
+    "additionalFields": {}
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "Google Drive Trigger": {
+   "main": [
+    [
+     {
+      "node": "Onfleet",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/0187_Onfleet_GoogleDrive_Create_Triggered.json",
+   "id": "08-0260"
+  }
+ }
+}

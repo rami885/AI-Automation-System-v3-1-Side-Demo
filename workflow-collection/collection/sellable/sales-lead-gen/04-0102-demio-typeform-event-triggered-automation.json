@@ -1,0 +1,66 @@
+{
+ "nodes": [
+  {
+   "name": "Typeform Trigger",
+   "type": "n8n-nodes-base.typeformTrigger",
+   "position": [
+    510,
+    260
+   ],
+   "parameters": {
+    "formId": ""
+   },
+   "credentials": {
+    "typeformApi": {
+     "name": "Typeform Burner Account"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Demio",
+   "type": "n8n-nodes-base.demio",
+   "position": [
+    710,
+    260
+   ],
+   "parameters": {
+    "email": "={{$json[\"What's your email address?\"]}}",
+    "eventId": 357191,
+    "firstName": "={{$json[\"Let's start with your name.\"]}}",
+    "operation": "register",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "demioApi": {
+     "name": "Demio API Credentials"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Typeform Trigger": {
+   "main": [
+    [
+     {
+      "node": "Demio",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/1207_Typeform_Demio_Automate_Triggered.json",
+   "id": "04-0102"
+  }
+ },
+ "settings": {},
+ "name": "Demio + Typeform Event-Triggered Automation"
+}

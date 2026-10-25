@@ -1,0 +1,60 @@
+{
+ "name": "Publish post to a publication",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    600,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Medium",
+   "type": "n8n-nodes-base.medium",
+   "position": [
+    800,
+    300
+   ],
+   "parameters": {
+    "title": "",
+    "content": "",
+    "publication": true,
+    "contentFormat": "",
+    "publicationId": "",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "mediumApi": {
+     "name": "medium"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Medium",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/1139_Manual_Medium_Automation_Triggered.json",
+   "id": "02-0132"
+  }
+ }
+}

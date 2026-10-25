@@ -1,0 +1,68 @@
+{
+ "nodes": [
+  {
+   "name": "Lemlist Trigger",
+   "type": "n8n-nodes-base.lemlistTrigger",
+   "position": [
+    410,
+    160
+   ],
+   "parameters": {
+    "event": "emailsReplied",
+    "options": {
+     "campaignId": "cam_H5pYEryq6mRKBiy5v"
+    }
+   },
+   "credentials": {
+    "lemlistApi": {
+     "name": "Lemlist API Credentials"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Mattermost",
+   "type": "n8n-nodes-base.mattermost",
+   "position": [
+    610,
+    160
+   ],
+   "parameters": {
+    "message": "={{$json[\"firstName\"]}} has replied back to your {{$json[\"campaignName\"]}}. Below is the reply:\n> {{$json[\"text\"]}}",
+    "channelId": "qx9yo1i9z3bg5qcy5a1oxnh69c",
+    "attachments": [],
+    "otherOptions": {}
+   },
+   "credentials": {
+    "mattermostApi": {
+     "name": "Mattermost Credentials"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Lemlist Trigger": {
+   "main": [
+    [
+     {
+      "node": "Mattermost",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/1221_Mattermost_Lemlist_Automate_Triggered.json",
+   "id": "03-0203"
+  }
+ },
+ "settings": {},
+ "name": "Lemlist + Mattermost Event-Triggered Automation"
+}

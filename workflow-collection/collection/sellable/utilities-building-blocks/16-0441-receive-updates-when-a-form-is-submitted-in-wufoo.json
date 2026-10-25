@@ -1,0 +1,67 @@
+{
+ "name": "Receive updates when a form is submitted in Wufoo",
+ "nodes": [
+  {
+   "name": "Wufoo Trigger",
+   "type": "n8n-nodes-base.wufooTrigger",
+   "position": [
+    1290,
+    140
+   ],
+   "parameters": {
+    "form": "n8n"
+   },
+   "credentials": {
+    "wufooApi": {
+     "name": "wufoo"
+    }
+   },
+   "typeVersion": 1,
+   "id": "18b7a702-c1b7-4582-b266-f938ff8cc0f3",
+   "notes": "This wufooTrigger node performs automated tasks as part of the workflow."
+  },
+  {
+   "id": "error-e0e6af22",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3,
+  "retryDelay": 1000
+ },
+ "connections": {},
+ "description": "Automated workflow: Receive updates when a form is submitted in Wufoo. This workflow processes data and performs automated tasks.",
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Wufoo/1129_Wufoo_Update_Triggered.json",
+   "id": "16-0441"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "notes": "Excellent quality workflow: Receive updates when a form is submitted in Wufoo. This workflow has been optimized for production use with comprehensive error handling, security, and documentation."
+}

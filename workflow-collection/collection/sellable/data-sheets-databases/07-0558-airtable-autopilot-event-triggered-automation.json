@@ -1,0 +1,105 @@
+{
+ "nodes": [
+  {
+   "name": "Autopilot Trigger",
+   "type": "n8n-nodes-base.autopilotTrigger",
+   "position": [
+    470,
+    200
+   ],
+   "parameters": {
+    "event": "contactAdded"
+   },
+   "credentials": {
+    "autopilotApi": {
+     "name": "Autopilot API Credentials"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Set",
+   "type": "n8n-nodes-base.set",
+   "position": [
+    670,
+    200
+   ],
+   "parameters": {
+    "values": {
+     "string": [
+      {
+       "name": "First Name",
+       "value": "={{$json[\"contact\"][\"FirstName\"]}}"
+      },
+      {
+       "name": "Last Name",
+       "value": "={{$json[\"contact\"][\"LastName\"]}}"
+      },
+      {
+       "name": "Email",
+       "value": "={{$json[\"contact\"][\"Email\"]}}"
+      }
+     ]
+    },
+    "options": {},
+    "keepOnlySet": true
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Airtable",
+   "type": "n8n-nodes-base.airtable",
+   "position": [
+    870,
+    200
+   ],
+   "parameters": {
+    "table": "Table 1",
+    "options": {},
+    "operation": "append",
+    "application": "appflT9EkWRGsSFM2"
+   },
+   "credentials": {
+    "airtableApi": {
+     "name": "Airtable Credentials n8n"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Set": {
+   "main": [
+    [
+     {
+      "node": "Airtable",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Autopilot Trigger": {
+   "main": [
+    [
+     {
+      "node": "Set",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/1228_Autopilot_Airtable_Automate_Triggered.json",
+   "id": "07-0558"
+  }
+ },
+ "settings": {},
+ "name": "Airtable + Autopilot Event-Triggered Automation"
+}

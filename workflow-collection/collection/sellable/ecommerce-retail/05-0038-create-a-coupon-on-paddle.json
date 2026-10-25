@@ -1,0 +1,82 @@
+{
+ "name": "Create a coupon on Paddle",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    550,
+    260
+   ],
+   "parameters": {},
+   "typeVersion": 1,
+   "id": "3dfeb5d9-d243-4ad8-ba55-d43beb2037c6",
+   "notes": "This manualTrigger node performs automated tasks as part of the workflow."
+  },
+  {
+   "name": "Paddle",
+   "type": "n8n-nodes-base.paddle",
+   "position": [
+    750,
+    260
+   ],
+   "parameters": {
+    "discountAmount": 2,
+    "additionalFields": {
+     "couponCode": "n8n-docs"
+    }
+   },
+   "credentials": {
+    "paddleApi": {
+     "name": "paddle"
+    }
+   },
+   "typeVersion": 1,
+   "id": "756b1f4d-3a9f-4f42-8b6e-46a046d19609",
+   "notes": "This paddle node performs automated tasks as part of the workflow."
+  },
+  {
+   "id": "error-472c1d6c",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3,
+  "retryDelay": 1000
+ },
+ "connections": {},
+ "description": "Automated workflow: Create a coupon on Paddle. This workflow processes data and performs automated tasks.",
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Manual/1019_Manual_Paddle_Create_Triggered.json",
+   "id": "05-0038"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "notes": "Excellent quality workflow: Create a coupon on Paddle. This workflow has been optimized for production use with comprehensive error handling, security, and documentation."
+}

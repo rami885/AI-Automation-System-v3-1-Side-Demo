@@ -1,0 +1,63 @@
+{
+ "name": "Creating an Onfleet Task for a new Shopify Fulfillment",
+ "nodes": [
+  {
+   "name": "Shopify Trigger",
+   "type": "n8n-nodes-base.shopifyTrigger",
+   "position": [
+    240,
+    440
+   ],
+   "parameters": {
+    "topic": "fulfillments/create"
+   },
+   "credentials": {
+    "shopifyApi": {
+     "name": "Shopify account"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Onfleet",
+   "type": "n8n-nodes-base.onfleet",
+   "position": [
+    460,
+    440
+   ],
+   "parameters": {
+    "operation": "create",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "onfleetApi": {
+     "name": "Onfleet API Key"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "Shopify Trigger": {
+   "main": [
+    [
+     {
+      "node": "Onfleet",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/0152_Shopify_Onfleet_Create_Triggered.json",
+   "id": "05-0041"
+  }
+ }
+}

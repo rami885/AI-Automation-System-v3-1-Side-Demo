@@ -1,0 +1,58 @@
+{
+ "name": "Create a client in Harvest",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    250,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Harvest",
+   "type": "n8n-nodes-base.harvest",
+   "position": [
+    450,
+    300
+   ],
+   "parameters": {
+    "name": "",
+    "resource": "client",
+    "operation": "create",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "harvestApi": {
+     "name": "harvestApi account"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Harvest",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/0088_Manual_Harvest_Create_Triggered.json",
+   "id": "12-0276"
+  }
+ }
+}

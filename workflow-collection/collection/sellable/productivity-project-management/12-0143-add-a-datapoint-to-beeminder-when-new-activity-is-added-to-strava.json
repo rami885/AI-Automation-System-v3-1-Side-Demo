@@ -1,0 +1,90 @@
+{
+ "name": "Add a datapoint to Beeminder when new activity is added to Strava",
+ "nodes": [
+  {
+   "name": "Strava Trigger",
+   "type": "n8n-nodes-base.stravaTrigger",
+   "position": [
+    470,
+    300
+   ],
+   "parameters": {
+    "event": "create",
+    "options": {}
+   },
+   "credentials": {
+    "stravaOAuth2Api": {
+     "name": "strava"
+    }
+   },
+   "typeVersion": 1,
+   "id": "1089bb6e-6749-4be5-a253-d3d39d493bd0",
+   "notes": "This stravaTrigger node performs automated tasks as part of the workflow."
+  },
+  {
+   "name": "Beeminder",
+   "type": "n8n-nodes-base.beeminder",
+   "position": [
+    670,
+    300
+   ],
+   "parameters": {
+    "goalName": "testing",
+    "additionalFields": {
+     "comment": "={{$json[\"object_data\"][\"name\"]}}"
+    }
+   },
+   "credentials": {
+    "beeminderApi": {
+     "name": "Beeminder credentials"
+    }
+   },
+   "typeVersion": 1,
+   "id": "c6144cba-720c-46d4-80ef-25ddf57b83f9",
+   "notes": "This beeminder node performs automated tasks as part of the workflow."
+  },
+  {
+   "id": "error-18117e8f",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3,
+  "retryDelay": 1000
+ },
+ "connections": {},
+ "description": "Automated workflow: Add a datapoint to Beeminder when new activity is added to Strava. This workflow processes data and performs automated tasks.",
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Beeminder/0403_Beeminder_Strava_Create_Triggered.json",
+   "id": "12-0143"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "notes": "Excellent quality workflow: Add a datapoint to Beeminder when new activity is added to Strava. This workflow has been optimized for production use with comprehensive error handling, security, and documentation."
+}

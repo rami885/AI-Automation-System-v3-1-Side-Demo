@@ -1,0 +1,92 @@
+{
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    250,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Storyblok",
+   "type": "n8n-nodes-base.storyblok",
+   "position": [
+    450,
+    300
+   ],
+   "parameters": {
+    "space": 96940,
+    "source": "managementApi",
+    "filters": {
+     "starts_with": "release"
+    },
+    "operation": "getAll"
+   },
+   "credentials": {
+    "storyblokManagementApi": {
+     "name": "storyblok-tanay"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Storyblok1",
+   "type": "n8n-nodes-base.storyblok",
+   "position": [
+    650,
+    300
+   ],
+   "parameters": {
+    "space": "={{$node[\"Storyblok\"].parameter[\"space\"]}}",
+    "source": "managementApi",
+    "options": {},
+    "storyId": "={{$node[\"Storyblok\"].json[\"id\"]}}",
+    "operation": "publish"
+   },
+   "credentials": {
+    "storyblokManagementApi": {
+     "name": "storyblok-tanay"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Storyblok": {
+   "main": [
+    [
+     {
+      "node": "Storyblok1",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Storyblok",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "automation/768-get-all-the-stories-and-publish-them-in-storyblok/workflow.json",
+   "id": "16-0404"
+  }
+ },
+ "settings": {},
+ "name": "Storyblok On-Demand Automation"
+}

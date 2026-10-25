@@ -1,0 +1,56 @@
+{
+ "name": "Get details of a forum in Disqus",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    250,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Disqus",
+   "type": "n8n-nodes-base.disqus",
+   "position": [
+    450,
+    300
+   ],
+   "parameters": {
+    "id": "hackernoon",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "disqusApi": {
+     "name": "disqusApi account"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Disqus",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/0080_Manual_Disqus_Import_Triggered.json",
+   "id": "16-0364"
+  }
+ }
+}
