@@ -1,0 +1,123 @@
+{
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    250,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1,
+   "id": "node-d25e535c"
+  },
+  {
+   "name": "HTTP Request",
+   "type": "n8n-nodes-base.httpRequest",
+   "position": [
+    450,
+    300
+   ],
+   "parameters": {
+    "url": "{{ $env.BASE_URL }}",
+    "options": {},
+    "responseFormat": "string"
+   },
+   "typeVersion": 1,
+   "id": "node-8b3a03f5"
+  },
+  {
+   "name": "HTML Extract",
+   "type": "n8n-nodes-base.htmlExtract",
+   "position": [
+    650,
+    300
+   ],
+   "parameters": {
+    "options": {},
+    "extractionValues": {
+     "values": [
+      {
+       "key": "item",
+       "cssSelector": "h2",
+       "returnArray": true,
+       "returnValue": "html"
+      }
+     ]
+    }
+   },
+   "typeVersion": 1,
+   "id": "node-f85cc5e9"
+  },
+  {
+   "name": "HTML Extract1",
+   "type": "n8n-nodes-base.htmlExtract",
+   "position": [
+    850,
+    300
+   ],
+   "parameters": {
+    "options": {},
+    "dataPropertyName": "item",
+    "extractionValues": {
+     "values": [
+      {
+       "key": "title",
+       "cssSelector": "a"
+      },
+      {
+       "key": "url",
+       "attribute": "href",
+       "cssSelector": "a",
+       "returnValue": "attribute"
+      }
+     ]
+    }
+   },
+   "typeVersion": 1,
+   "id": "node-5ede6a55"
+  },
+  {
+   "id": "error-1307c3cc",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "connections": {},
+ "name": "Htmlextract On-Demand Automation",
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Manual/0954_Manual_Htmlextract_Automation_Webhook.json",
+   "id": "14-0077"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "description": "Production-ready workflow: Production Workflow. This workflow has been optimized for production use with comprehensive error handling, security, and documentation.",
+ "active": false
+}

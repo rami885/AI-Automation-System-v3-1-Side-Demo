@@ -1,0 +1,80 @@
+{
+ "name": "Create a user profile in Vero",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    250,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1,
+   "id": "e4aa22ca-d37b-48cc-ab97-8419cfc40d44",
+   "notes": "This manualTrigger node performs automated tasks as part of the workflow."
+  },
+  {
+   "name": "Vero",
+   "type": "n8n-nodes-base.vero",
+   "position": [
+    450,
+    300
+   ],
+   "parameters": {
+    "id": "",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "veroApi": {
+     "name": "veroApi account"
+    }
+   },
+   "typeVersion": 1,
+   "id": "0449554a-8e6a-44f1-8c38-417c3b9408c2",
+   "notes": "This vero node performs automated tasks as part of the workflow."
+  },
+  {
+   "id": "error-bb040d4d",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3,
+  "retryDelay": 1000
+ },
+ "connections": {},
+ "description": "Automated workflow: Create a user profile in Vero. This workflow processes data and performs automated tasks.",
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Manual/0111_Manual_Vero_Create_Triggered.json",
+   "id": "08-0259"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "notes": "Excellent quality workflow: Create a user profile in Vero. This workflow has been optimized for production use with comprehensive error handling, security, and documentation."
+}

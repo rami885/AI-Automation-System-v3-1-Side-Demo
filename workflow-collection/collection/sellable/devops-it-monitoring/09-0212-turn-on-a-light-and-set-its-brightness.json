@@ -1,0 +1,58 @@
+{
+ "name": "Turn on a light and set its brightness",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    590,
+    260
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Philips Hue",
+   "type": "n8n-nodes-base.philipsHue",
+   "position": [
+    790,
+    260
+   ],
+   "parameters": {
+    "lightId": "123",
+    "additionalFields": {
+     "bri": 90
+    }
+   },
+   "credentials": {
+    "philipsHueOAuth2Api": {
+     "name": "philips-hue"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Philips Hue",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/1053_Manual_Philipshue_Automation_Triggered.json",
+   "id": "09-0212"
+  }
+ }
+}

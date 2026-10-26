@@ -1,0 +1,206 @@
+{
+  "files_seen": 6283,
+  "valid_workflows": 5843,
+  "not_a_workflow": 440,
+  "exact_duplicates_removed": 1176,
+  "unique_workflows": 4667,
+  "variants_demoted": 356,
+  "skeletons_demoted": 459,
+  "names_auto_generated_sellable": 1793,
+  "with_hardcoded_secrets_redacted": 27,
+  "sellable": 3304,
+  "premium": 591,
+  "standard": 2713,
+  "review_only": 1133,
+  "rights_needed": 230,
+  "ai_workflows_sellable": 711,
+  "distinct_integrations_sellable": 296,
+  "min_score": 50,
+  "per_category_sellable": {
+    "ai-agents-llm": 694,
+    "content-social-media": 119,
+    "marketing-email-crm": 188,
+    "sales-lead-gen": 63,
+    "ecommerce-retail": 56,
+    "customer-support-chatbots": 191,
+    "data-sheets-databases": 609,
+    "documents-pdf-files": 289,
+    "devops-it-monitoring": 169,
+    "hr-recruitment": 5,
+    "finance-invoicing": 11,
+    "productivity-project-management": 260,
+    "communication-notifications": 294,
+    "web-scraping-research": 63,
+    "seo-analytics": 12,
+    "utilities-building-blocks": 281
+  },
+  "top_integrations": [
+    [
+      "googlesheets",
+      522
+    ],
+    [
+      "gmail",
+      388
+    ],
+    [
+      "telegram",
+      319
+    ],
+    [
+      "googledrive",
+      300
+    ],
+    [
+      "slack",
+      247
+    ],
+    [
+      "openai",
+      214
+    ],
+    [
+      "airtable",
+      198
+    ],
+    [
+      "notion",
+      114
+    ],
+    [
+      "googlecalendar",
+      101
+    ],
+    [
+      "documentdefaultdataloader",
+      87
+    ],
+    [
+      "textsplitterrecursivecharactertextsplitter",
+      71
+    ],
+    [
+      "informationextractor",
+      66
+    ],
+    [
+      "hubspot",
+      66
+    ],
+    [
+      "postgres",
+      64
+    ],
+    [
+      "github",
+      57
+    ],
+    [
+      "microsoftoutlook",
+      55
+    ],
+    [
+      "wordpress",
+      50
+    ],
+    [
+      "twitter",
+      50
+    ],
+    [
+      "mattermost",
+      49
+    ],
+    [
+      "discord",
+      47
+    ],
+    [
+      "twilio",
+      41
+    ],
+    [
+      "youtube",
+      40
+    ],
+    [
+      "googledocs",
+      39
+    ],
+    [
+      "mysql",
+      39
+    ],
+    [
+      "pipedrive",
+      39
+    ],
+    [
+      "supabase",
+      38
+    ],
+    [
+      "redis",
+      37
+    ],
+    [
+      "textclassifier",
+      36
+    ],
+    [
+      "jira",
+      36
+    ],
+    [
+      "typeform",
+      36
+    ],
+    [
+      "whatsapp",
+      34
+    ],
+    [
+      "openweathermap",
+      32
+    ],
+    [
+      "shopify",
+      27
+    ],
+    [
+      "compression",
+      26
+    ],
+    [
+      "zendesk",
+      26
+    ],
+    [
+      "woocommerce",
+      25
+    ],
+    [
+      "mcpclient",
+      25
+    ],
+    [
+      "graphql",
+      25
+    ],
+    [
+      "dropbox",
+      24
+    ],
+    [
+      "clearbit",
+      24
+    ]
+  ],
+  "per_source": {
+    "zie619": 1961,
+    "oxbshw": 2369,
+    "enescingoz": 107,
+    "wassupjay": 202,
+    "lucaswalter": 28
+  }
+}

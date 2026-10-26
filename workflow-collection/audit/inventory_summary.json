@@ -1,0 +1,127 @@
+{
+  "roots": {
+    "raw-source:zie619": {
+      "other-json": 3,
+      "workflow": 2066,
+      "config": 6,
+      "index": 2
+    },
+    "raw-source:oxbshw": {
+      "workflow": 3187,
+      "other-json": 467,
+      "index": 5,
+      "config": 4
+    },
+    "raw-source:enescingoz": {
+      "workflow": 361,
+      "invalid-json": 8
+    },
+    "raw-source:wassupjay": {
+      "workflow": 202
+    },
+    "raw-source:lucaswalter": {
+      "workflow": 38
+    },
+    "collection:sellable": {
+      "workflow": 3304
+    },
+    "collection:review-only": {
+      "workflow": 336
+    },
+    "collection:variants": {
+      "workflow": 356
+    },
+    "collection:skeletons": {
+      "workflow": 441
+    },
+    "collection:rights-needed": {
+      "workflow": 230
+    },
+    "catalog": {
+      "index": 1,
+      "config": 1
+    },
+    "scripts": {
+      "config": 1
+    }
+  },
+  "total_json_files": 11019,
+  "total_workflow_files": 10521,
+  "unique_workflow_sha256_all_roots": 10206,
+  "unique_workflow_sha256_raw_sources": 5539,
+  "unique_n8n_io_template_links": 27,
+  "files_containing_n8n_io_links": 58,
+  "top_link_files": [
+    [
+      "ultimate-n8n-ai-workflows/automation/1511_Manual_Stickynote_Automation_Webhook.json",
+      2
+    ],
+    [
+      "ultimate-n8n-ai-workflows/automation/1660_Splitout_HTTP_Create_Webhook.json",
+      2
+    ],
+    [
+      "ultimate-n8n-ai-workflows/automation/1401_Code_Webhook_Automate_Webhook.json",
+      2
+    ],
+    [
+      "ultimate-n8n-ai-workflows/automation/1737_HTTP_Stickynote_Automation_Webhook.json",
+      2
+    ],
+    [
+      "ultimate-n8n-ai-workflows/workflows/ai-agents/0636_HTTP_Stickynote_Create_Webhook.json",
+      2
+    ],
+    [
+      "ultimate-n8n-ai-workflows/workflows/ai-agents/0540_Manual_Stickynote_Automation_Webhook.json",
+      2
+    ],
+    [
+      "ultimate-n8n-ai-workflows/automation/2343-introduction-to-the-http-tool/workflow.json",
+      2
+    ],
+    [
+      "ultimate-n8n-ai-workflows/automation/2559-visualize-your-sql-agent-queries-with-openai-and-quickchart-io/workflow.json",
+      2
+    ],
+    [
+      "awesome-n8n-templates/Other_Integrations_and_Use_Cases/Visualize your SQL Agent queries with OpenAI and Quickchart.io.json",
+      2
+    ],
+    [
+      "awesome-n8n-templates/Other_Integrations_and_Use_Cases/Introduction to the HTTP Tool.json",
+      2
+    ],
+    [
+      "awesome-n8n-templates/README-ko.md",
+      1
+    ],
+    [
+      "awesome-n8n-templates/README-pt.md",
+      1
+    ],
+    [
+      "awesome-n8n-templates/README-es.md",
+      1
+    ],
+    [
+      "awesome-n8n-templates/README-zh.md",
+      1
+    ],
+    [
+      "awesome-n8n-templates/README.md",
+      1
+    ]
+  ],
+  "unique_github_repo_links_in_readmes": [
+    "https://github.com/Trusera/ai-bom",
+    "https://github.com/YOUR_USERNAME/n8n-workflows.git",
+    "https://github.com/Zie619/n8n-workflows",
+    "https://github.com/Zie619/n8n-workflows.git",
+    "https://github.com/comfyanonymous/ComfyUI",
+    "https://github.com/enescingoz/awesome-n8n-templates",
+    "https://github.com/frdel/agent-zero",
+    "https://github.com/wassupjay/n8n-free-templates.git"
+  ],
+  "total_bytes": 161473543
+}

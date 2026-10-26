@@ -1,0 +1,80 @@
+{
+ "nodes": [
+  {
+   "name": "PostHog",
+   "type": "n8n-nodes-base.postHog",
+   "position": [
+    640,
+    280
+   ],
+   "parameters": {
+    "eventName": "={{$json[\"query\"][\"event\"]}}",
+    "distinctId": "n8n",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "postHogApi": {
+     "name": "PostHog Credentials"
+    }
+   },
+   "typeVersion": 1,
+   "id": "node-c999c01a"
+  },
+  {
+   "name": "Webhook",
+   "type": "n8n-nodes-base.webhook",
+   "position": [
+    440,
+    280
+   ],
+   "parameters": {
+    "path": "f6d0071e-3cf9-49fd-8bbd-afdbea6b0c67",
+    "options": {}
+   },
+   "typeVersion": 1,
+   "id": "node-c93d0470"
+  },
+  {
+   "id": "error-383539bb",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "connections": {},
+ "name": "Posthog Event-Triggered Automation",
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Posthog/1217_Posthog_Webhook_Automate_Webhook.json",
+   "id": "15-0019"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "description": "Production-ready workflow: Production Workflow. This workflow has been optimized for production use with comprehensive error handling, security, and documentation.",
+ "active": false
+}

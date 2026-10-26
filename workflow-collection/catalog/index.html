@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workflow Catalog Browser</title>
+<style>
+:root{--bg:#0f1115;--card:#171a21;--ink:#e8eaf0;--muted:#9aa3b2;--line:#262b36;--accent:#7c9cff;--ok:#3ddc97;--warn:#ffb454}
+@media (prefers-color-scheme: light){:root{--bg:#f6f7fb;--card:#fff;--ink:#14161c;--muted:#5b6475;--line:#e3e6ee}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:16px}
+h1{font-size:22px;margin:0 0 4px}.sub{color:var(--muted);margin:0 0 16px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+input,select{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit}
+input{flex:1;min-width:200px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px}
+.stat b{display:block;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.card h3{font-size:15px;margin:0;line-height:1.3}.meta{font-size:12px;color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:4px}.tag{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--muted)}
+.tier{font-size:11px;font-weight:600;border-radius:6px;padding:1px 6px;display:inline-block}
+.premium{background:rgba(255,180,84,.15);color:var(--warn)}.standard{background:rgba(61,220,151,.15);color:var(--ok)}
+.score{font-size:12px;color:var(--muted)}a{color:var(--accent);text-decoration:none}.desc{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.more{margin:16px auto;display:block;padding:10px 18px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.err{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+</style>
+</head>
+<body>
+<h1>n8n Workflow Collection — Catalog Browser</h1>
+<p class="sub">Searchable preview of the sellable set. Data comes from <code>catalog.json</code> next to this page (serve the folder over HTTP, e.g. <code>python3 -m http.server</code>, or open via GitHub Pages).</p>
+<div class="stats" id="stats"></div>
+<div class="bar">
+  <input id="q" placeholder="Search name, integration, node type…">
+  <select id="cat"><option value="">All categories</option></select>
+  <select id="tier"><option value="">All tiers</option><option value="premium">Premium</option><option value="standard">Standard</option></select>
+  <select id="ai"><option value="">AI + non-AI</option><option value="1">AI-powered only</option></select>
+  <select id="sort"><option value="quality">Sort: quality</option><option value="name">Sort: name</option><option value="nodes">Sort: node count</option></select>
+</div>
+<div class="grid" id="grid"></div>
+<button class="more" id="more" hidden>Show more</button>
+<script>
+(async function(){
+  const $=s=>document.querySelector(s);
+  let data;
+  try{ const r=await fetch('catalog.json'); if(!r.ok) throw 0; data=await r.json(); }
+  catch(e){ $('#grid').innerHTML='<div class="err">Could not load <b>catalog.json</b>. Serve this folder over HTTP (file:// blocks fetch).</div>'; return; }
+  const rows=data.workflows.filter(w=>w.sellable);
+  const cats=data.categories; const catTitle=Object.fromEntries(cats.map(c=>[c.id,c.title]));
+  for(const c of cats){ const n=rows.filter(w=>w.category===c.id).length; if(!n) continue; const o=document.createElement('option'); o.value=c.id; o.textContent=`${c.title} (${n})`; $('#cat').append(o); }
+  const integ=new Set(rows.flatMap(w=>w.integrations));
+  $('#stats').innerHTML=[['Sellable workflows',rows.length],['Premium (AI)',rows.filter(w=>w.tier==='premium').length],['AI-powered',rows.filter(w=>w.is_ai).length],['Categories',new Set(rows.map(w=>w.category)).size],['Integrations',integ.size]].map(([k,v])=>`<div class="stat"><b>${v.toLocaleString()}</b>${k}</div>`).join('');
+  let shown=0, cur=[]; const PAGE=60;
+  function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+  function card(w){return `<div class="card"><div><span class="tier ${w.tier}">${w.tier}</span> <span class="score">score ${w.quality} · ${w.node_count} nodes · ${w.id}</span></div><h3><a href="../${esc(w.file)}" target="_blank" rel="noopener">${esc(w.name)}</a></h3><div class="meta">${esc(catTitle[w.category])}${w.is_ai?' · 🤖 AI':''}${w.has_trigger?'':' · no trigger'}</div>${w.description?`<div class="desc">${esc(w.description)}</div>`:''}<div class="tags">${w.integrations.slice(0,8).map(i=>`<span class="tag">${esc(i)}</span>`).join('')}</div></div>`}
+  function render(reset){ if(reset){shown=0;$('#grid').innerHTML=''} const slice=cur.slice(shown,shown+PAGE); $('#grid').insertAdjacentHTML('beforeend',slice.map(card).join('')); shown+=slice.length; $('#more').hidden=shown>=cur.length; $('#more').textContent=`Show more (${cur.length-shown} left)`; }
+  function apply(){ const q=$('#q').value.trim().toLowerCase(), c=$('#cat').value, t=$('#tier').value, ai=$('#ai').value, s=$('#sort').value;
+    cur=rows.filter(w=>(!c||w.category===c)&&(!t||w.tier===t)&&(!ai||w.is_ai)&&(!q||[w.name,w.description,...w.integrations,...w.node_types].join(' ').toLowerCase().includes(q)));
+    cur.sort((a,b)=>s==='name'?a.name.localeCompare(b.name):s==='nodes'?b.node_count-a.node_count:b.quality-a.quality); render(true); }
+  ['q','cat','tier','ai','sort'].forEach(id=>$('#'+id).addEventListener('input',apply)); $('#more').onclick=()=>render(false); apply();
+})();
+</script>
+</body>
+</html>

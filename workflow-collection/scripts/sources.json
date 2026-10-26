@@ -1,0 +1,55 @@
+{
+  "_comment": "Public n8n workflow sources. license_ok=true means the license permits commercial redistribution (MIT / CC-BY). Sources without a license are collected for review only and are NEVER placed in the sellable set.",
+  "sources": [
+    {
+      "id": "zie619",
+      "repo": "Zie619/n8n-workflows",
+      "url": "https://github.com/Zie619/n8n-workflows",
+      "license": "MIT",
+      "license_ok": true,
+      "attribution": "Zie619/n8n-workflows (MIT)",
+      "paths": ["workflows"],
+      "notes": "Largest community aggregator. History was rewritten once for a DMCA takedown, so keep the per-file provenance and re-check anything flagged."
+    },
+    {
+      "id": "oxbshw",
+      "repo": "oxbshw/ultimate-n8n-ai-workflows",
+      "url": "https://github.com/oxbshw/ultimate-n8n-ai-workflows",
+      "license": "MIT",
+      "license_ok": true,
+      "attribution": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+      "paths": ["workflows", "New Workflow", "automation", "gsc-ai-seo-writer", "keyword-rank-tracker", "serp-analysis"],
+      "notes": "AI-heavy collection, overlaps heavily with zie619; dedupe handles it."
+    },
+    {
+      "id": "enescingoz",
+      "repo": "enescingoz/awesome-n8n-templates",
+      "url": "https://github.com/enescingoz/awesome-n8n-templates",
+      "license": "CC-BY-4.0",
+      "license_ok": true,
+      "attribution": "enescingoz/awesome-n8n-templates (CC BY 4.0) - attribution required in product docs",
+      "paths": ["."],
+      "notes": "Curated, already grouped by integration folders."
+    },
+    {
+      "id": "wassupjay",
+      "repo": "wassupjay/n8n-free-templates",
+      "url": "https://github.com/wassupjay/n8n-free-templates",
+      "license": "NONE",
+      "license_ok": false,
+      "attribution": "wassupjay/n8n-free-templates (no license - all rights reserved)",
+      "paths": ["."],
+      "notes": "Industry-vertical folders (healthcare, legal, real estate...). No LICENSE file: review-only until the author grants rights."
+    },
+    {
+      "id": "lucaswalter",
+      "repo": "lucaswalter/n8n-ai-workflows",
+      "url": "https://github.com/lucaswalter/n8n-ai-workflows",
+      "license": "NONE",
+      "license_ok": false,
+      "attribution": "lucaswalter/n8n-ai-workflows (no license - all rights reserved)",
+      "paths": ["."],
+      "notes": "38 high-value AI agent builds. Review-only; good reference for what premium looks like."
+    }
+  ]
+}

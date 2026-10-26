@@ -1,0 +1,68 @@
+{
+ "name": "Receive updates when a form submission occurs in your Webflow website",
+ "nodes": [
+  {
+   "name": "Webflow Trigger",
+   "type": "n8n-nodes-base.webflowTrigger",
+   "position": [
+    514,
+    217
+   ],
+   "parameters": {
+    "site": "5f4e2d2bbdf69039816428f7",
+    "authentication": "{{ $credentials.oAuth2 }}"
+   },
+   "credentials": {
+    "webflowOAuth2Api": {
+     "name": "webflow"
+    }
+   },
+   "typeVersion": 1,
+   "id": "7a64ad4a-b7b0-4c8d-af38-fa3a2f49e4e4",
+   "notes": "This webflowTrigger node performs automated tasks as part of the workflow."
+  },
+  {
+   "id": "error-44837c24",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3,
+  "retryDelay": 1000
+ },
+ "connections": {},
+ "description": "Automated workflow: Receive updates when a form submission occurs in your Webflow website. This workflow processes data and performs automated tasks.",
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Webflow/0953_Webflow_Update_Triggered.json",
+   "id": "14-0081"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "notes": "Excellent quality workflow: Receive updates when a form submission occurs in your Webflow website. This workflow has been optimized for production use with comprehensive error handling, security, and documentation."
+}

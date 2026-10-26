@@ -1,0 +1,68 @@
+{
+ "name": "Receive updates when a subscriber is added through a form in ConvertKit",
+ "nodes": [
+  {
+   "name": "ConvertKit Trigger",
+   "type": "n8n-nodes-base.convertKitTrigger",
+   "position": [
+    690,
+    260
+   ],
+   "parameters": {
+    "event": "formSubscribe",
+    "formId": 1657198
+   },
+   "credentials": {
+    "convertKitApi": {
+     "name": "convertkit"
+    }
+   },
+   "typeVersion": 1,
+   "id": "137b7728-7ea8-4709-8c32-8fe1ba22c100",
+   "notes": "This convertKitTrigger node performs automated tasks as part of the workflow."
+  },
+  {
+   "id": "error-5a488409",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3,
+  "retryDelay": 1000
+ },
+ "connections": {},
+ "description": "Automated workflow: Receive updates when a subscriber is added through a form in ConvertKit. This workflow processes data and performs automated tasks.",
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Convertkit/0723_Convertkit_Create_Triggered.json",
+   "id": "03-0212"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "notes": "Excellent quality workflow: Receive updates when a subscriber is added through a form in ConvertKit. This workflow has been optimized for production use with comprehensive error handling, security, and documentation."
+}

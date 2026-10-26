@@ -1,0 +1,59 @@
+{
+ "name": "Create a new customer in Chargebee",
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    250,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Chargebee",
+   "type": "n8n-nodes-base.chargebee",
+   "position": [
+    460,
+    300
+   ],
+   "parameters": {
+    "resource": "customer",
+    "properties": {
+     "last_name": "",
+     "first_name": ""
+    }
+   },
+   "credentials": {
+    "chargebeeApi": {
+     "name": "chargebeeApi account"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Chargebee",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/0018_Manual_Chargebee_Create_Triggered.json",
+   "id": "05-0064"
+  }
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "name": "Send a message on Mattermost when an order is created in WooCommerce",
+ "nodes": [
+  {
+   "name": "WooCommerce Trigger",
+   "type": "n8n-nodes-base.wooCommerceTrigger",
+   "position": [
+    550,
+    260
+   ],
+   "parameters": {
+    "event": "order.created"
+   },
+   "credentials": {
+    "wooCommerceApi": {
+     "name": "woocommerce"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Mattermost",
+   "type": "n8n-nodes-base.mattermost",
+   "position": [
+    750,
+    260
+   ],
+   "parameters": {
+    "message": "={{$node[\"WooCommerce Trigger\"].json[\"billing\"][\"first_name\"]}} bought {{$node[\"WooCommerce Trigger\"].json[\"line_items\"][0][\"name\"]}}!",
+    "channelId": "pj1p95ebei8g3ro5p84kxxuuio",
+    "attachments": [],
+    "otherOptions": {}
+   },
+   "credentials": {
+    "mattermostApi": {
+     "name": "Mattermost Credentials"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "active": false,
+ "settings": {},
+ "connections": {
+  "WooCommerce Trigger": {
+   "main": [
+    [
+     {
+      "node": "Mattermost",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/0294_Mattermost_Woocommerce_Create_Triggered.json",
+   "id": "05-0056"
+  }
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    250,
+    340
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Mindee",
+   "type": "n8n-nodes-base.mindee",
+   "position": [
+    650,
+    340
+   ],
+   "parameters": {},
+   "credentials": {
+    "mindeeReceiptApi": {
+     "name": "mindee"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "HTTP Request",
+   "type": "n8n-nodes-base.httpRequest",
+   "position": [
+    450,
+    340
+   ],
+   "parameters": {
+    "url": "https://miro.medium.com/max/1400/0*1T9GkAb93w5NSMsf",
+    "options": {},
+    "responseFormat": "file"
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "HTTP Request": {
+   "main": [
+    [
+     {
+      "node": "Mindee",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "HTTP Request",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "automation/702-extract-information-from-an-image-of-a-receipt/workflow.json",
+   "id": "08-0325"
+  }
+ },
+ "settings": {},
+ "name": "Mindee On-Demand Automation"
+}

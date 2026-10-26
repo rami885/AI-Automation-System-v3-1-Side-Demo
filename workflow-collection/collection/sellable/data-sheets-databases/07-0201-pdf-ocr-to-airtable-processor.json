@@ -1,0 +1,480 @@
+{
+ "name": "PDF OCR to Airtable Processor",
+ "nodes": [
+  {
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "minutes",
+       "minutesInterval": 15
+      }
+     ]
+    }
+   },
+   "id": "schedule-trigger",
+   "name": "Check Drive Every 15min",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.1,
+   "position": [
+    240,
+    300
+   ]
+  },
+  {
+   "parameters": {
+    "resource": "file",
+    "operation": "search",
+    "queryString": "parents in '{{$node[\"Set Drive Folder ID\"].json[\"folderId\"]}}' and mimeType='application/pdf' and trashed=false",
+    "returnAll": true
+   },
+   "id": "search-pdfs",
+   "name": "Search PDFs in Drive",
+   "type": "n8n-nodes-base.googleDrive",
+   "typeVersion": 3,
+   "position": [
+    600,
+    300
+   ],
+   "credentials": {
+    "googleDriveOAuth2Api": {
+     "name": "Google Drive"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "values": {
+     "string": [
+      {
+       "name": "folderId",
+       "value": "YOUR_GOOGLE_DRIVE_FOLDER_ID"
+      }
+     ]
+    },
+    "options": {}
+   },
+   "id": "set-folder-id",
+   "name": "Set Drive Folder ID",
+   "type": "n8n-nodes-base.set",
+   "typeVersion": 3.2,
+   "position": [
+    420,
+    300
+   ]
+  },
+  {
+   "parameters": {
+    "resource": "record",
+    "operation": "list",
+    "application": "airtable-app-id",
+    "table": "processed_files",
+    "returnAll": true
+   },
+   "id": "get-processed-files",
+   "name": "Get Processed Files",
+   "type": "n8n-nodes-base.airtable",
+   "typeVersion": 1,
+   "position": [
+    780,
+    300
+   ],
+   "credentials": {
+    "airtableTokenApi": {
+     "name": "Airtable"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "jsCode": "// Filter out already processed files\nconst driveFiles = $input.first().json;\nconst processedFiles = $input.last().json;\n\nconst processedFileIds = processedFiles.map(record => record.fields.file_id);\n\nconst newFiles = driveFiles.filter(file => !processedFileIds.includes(file.id));\n\nif (newFiles.length === 0) {\n  return [];\n}\n\nreturn newFiles.map(file => ({ json: file }));"
+   },
+   "id": "filter-new-files",
+   "name": "Filter New Files",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    960,
+    300
+   ]
+  },
+  {
+   "parameters": {
+    "resource": "file",
+    "operation": "download",
+    "fileId": "={{$json.id}}",
+    "options": {}
+   },
+   "id": "download-pdf",
+   "name": "Download PDF",
+   "type": "n8n-nodes-base.googleDrive",
+   "typeVersion": 3,
+   "position": [
+    1140,
+    300
+   ],
+   "credentials": {
+    "googleDriveOAuth2Api": {
+     "name": "Google Drive"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "operation": "extractText",
+    "fileData": "={{$json.data}}",
+    "options": {
+     "language": "eng"
+    }
+   },
+   "id": "extract-text-ocr",
+   "name": "Extract Text with OCR",
+   "type": "n8n-nodes-base.extractFromFile",
+   "typeVersion": 1,
+   "position": [
+    1320,
+    300
+   ]
+  },
+  {
+   "parameters": {
+    "resource": "chat",
+    "operation": "create",
+    "model": "gpt-4",
+    "messages": {
+     "values": [
+      {
+       "role": "system",
+       "content": "You are a document processing assistant. Extract structured information from the provided text and format it as JSON with the following fields: title, summary, key_points (array), document_type, date_mentioned, and important_entities (array). Ensure the response is valid JSON only."
+      },
+      {
+       "role": "user",
+       "content": "Process this extracted text:\n\n{{$json.text}}"
+      }
+     ]
+    },
+    "options": {}
+   },
+   "id": "format-with-gpt",
+   "name": "Format with GPT",
+   "type": "n8n-nodes-base.openAi",
+   "typeVersion": 1,
+   "position": [
+    1500,
+    300
+   ],
+   "credentials": {
+    "openAiApi": {
+     "name": "OpenAI"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "jsCode": "// Parse GPT response and combine with file metadata\nconst gptResponse = $json.choices[0].message.content;\nconst fileData = $node[\"Download PDF\"].json;\n\ntry {\n  const parsedData = JSON.parse(gptResponse);\n  \n  return {\n    json: {\n      ...parsedData,\n      file_id: fileData.id,\n      file_name: fileData.name,\n      file_size: fileData.size,\n      processed_date: new Date().toISOString(),\n      drive_link: fileData.webViewLink\n    }\n  };\n} catch (error) {\n  return {\n    json: {\n      title: \"Parse Error\",\n      summary: \"Failed to parse GPT response\",\n      key_points: [],\n      document_type: \"unknown\",\n      date_mentioned: null,\n      important_entities: [],\n      file_id: fileData.id,\n      file_name: fileData.name,\n      file_size: fileData.size,\n      processed_date: new Date().toISOString(),\n      drive_link: fileData.webViewLink,\n      error: error.message\n    }\n  };\n}"
+   },
+   "id": "prepare-airtable-data",
+   "name": "Prepare Airtable Data",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    1680,
+    300
+   ]
+  },
+  {
+   "parameters": {
+    "resource": "record",
+    "operation": "create",
+    "application": "airtable-app-id",
+    "table": "processed_documents",
+    "fields": {
+     "values": [
+      {
+       "fieldName": "title",
+       "fieldValue": "={{$json.title}}"
+      },
+      {
+       "fieldName": "summary",
+       "fieldValue": "={{$json.summary}}"
+      },
+      {
+       "fieldName": "key_points",
+       "fieldValue": "={{JSON.stringify($json.key_points)}}"
+      },
+      {
+       "fieldName": "document_type",
+       "fieldValue": "={{$json.document_type}}"
+      },
+      {
+       "fieldName": "date_mentioned",
+       "fieldValue": "={{$json.date_mentioned}}"
+      },
+      {
+       "fieldName": "important_entities",
+       "fieldValue": "={{JSON.stringify($json.important_entities)}}"
+      },
+      {
+       "fieldName": "file_name",
+       "fieldValue": "={{$json.file_name}}"
+      },
+      {
+       "fieldName": "file_size",
+       "fieldValue": "={{$json.file_size}}"
+      },
+      {
+       "fieldName": "processed_date",
+       "fieldValue": "={{$json.processed_date}}"
+      },
+      {
+       "fieldName": "drive_link",
+       "fieldValue": "={{$json.drive_link}}"
+      }
+     ]
+    }
+   },
+   "id": "create-document-record",
+   "name": "Create Document Record",
+   "type": "n8n-nodes-base.airtable",
+   "typeVersion": 1,
+   "position": [
+    1860,
+    300
+   ],
+   "credentials": {
+    "airtableTokenApi": {
+     "name": "Airtable"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "resource": "record",
+    "operation": "create",
+    "application": "airtable-app-id",
+    "table": "processed_files",
+    "fields": {
+     "values": [
+      {
+       "fieldName": "file_id",
+       "fieldValue": "={{$json.file_id}}"
+      },
+      {
+       "fieldName": "file_name",
+       "fieldValue": "={{$json.file_name}}"
+      },
+      {
+       "fieldName": "processed_date",
+       "fieldValue": "={{$json.processed_date}}"
+      }
+     ]
+    }
+   },
+   "id": "track-processed-file",
+   "name": "Track Processed File",
+   "type": "n8n-nodes-base.airtable",
+   "typeVersion": 1,
+   "position": [
+    2040,
+    300
+   ],
+   "credentials": {
+    "airtableTokenApi": {
+     "name": "Airtable"
+    }
+   }
+  },
+  {
+   "parameters": {
+    "conditions": {
+     "options": {
+      "caseSensitive": true,
+      "leftValue": "",
+      "typeValidation": "strict"
+     },
+     "conditions": [
+      {
+       "id": "error-condition",
+       "leftValue": "={{$json.error}}",
+       "rightValue": "",
+       "operator": {
+        "type": "string",
+        "operation": "exists"
+       }
+      }
+     ],
+     "combinator": "and"
+    },
+    "options": {}
+   },
+   "id": "check-for-errors",
+   "name": "Check for Errors",
+   "type": "n8n-nodes-base.if",
+   "typeVersion": 2,
+   "position": [
+    1860,
+    480
+   ]
+  },
+  {
+   "parameters": {
+    "content": "🚨 **PDF Processing Error**\n\nFile: {{$json.file_name}}\nError: {{$json.error}}\nTime: {{$json.processed_date}}\n\nPlease check the workflow logs for more details.",
+    "options": {}
+   },
+   "id": "error-notification",
+   "name": "Send Error Notification",
+   "type": "n8n-nodes-base.slack",
+   "typeVersion": 2.1,
+   "position": [
+    2040,
+    600
+   ],
+   "credentials": {
+    "slackApi": {
+     "name": "Slack"
+    }
+   }
+  }
+ ],
+ "connections": {
+  "Check Drive Every 15min": {
+   "main": [
+    [
+     {
+      "node": "Set Drive Folder ID",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Set Drive Folder ID": {
+   "main": [
+    [
+     {
+      "node": "Search PDFs in Drive",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Search PDFs in Drive": {
+   "main": [
+    [
+     {
+      "node": "Get Processed Files",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Get Processed Files": {
+   "main": [
+    [
+     {
+      "node": "Filter New Files",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Filter New Files": {
+   "main": [
+    [
+     {
+      "node": "Download PDF",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Download PDF": {
+   "main": [
+    [
+     {
+      "node": "Extract Text with OCR",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Extract Text with OCR": {
+   "main": [
+    [
+     {
+      "node": "Format with GPT",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Format with GPT": {
+   "main": [
+    [
+     {
+      "node": "Prepare Airtable Data",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Prepare Airtable Data": {
+   "main": [
+    [
+     {
+      "node": "Create Document Record",
+      "type": "main",
+      "index": 0
+     },
+     {
+      "node": "Check for Errors",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Create Document Record": {
+   "main": [
+    [
+     {
+      "node": "Track Processed File",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Check for Errors": {
+   "main": [
+    [
+     {
+      "node": "Send Error Notification",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "settings": {
+  "executionOrder": "v1"
+ },
+ "tags": [],
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "New Workflow/workflow that watches a Google Drive folder for new PDFs, extracts text with OCR, formats it with GPT.json",
+   "id": "07-0201"
+  }
+ }
+}

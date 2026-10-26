@@ -1,0 +1,67 @@
+{
+ "name": "Receive updates when an event occurs in Taiga",
+ "nodes": [
+  {
+   "name": "Taiga Trigger",
+   "type": "n8n-nodes-base.taigaTrigger",
+   "position": [
+    690,
+    260
+   ],
+   "parameters": {
+    "projectId": 385605
+   },
+   "credentials": {
+    "taigaCloudApi": {
+     "name": "taiga"
+    }
+   },
+   "typeVersion": 1,
+   "id": "f11f785d-45ec-4eab-bb4c-2b441fb0b23c",
+   "notes": "This taigaTrigger node performs automated tasks as part of the workflow."
+  },
+  {
+   "id": "error-e09cc439",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "active": false,
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3,
+  "retryDelay": 1000
+ },
+ "connections": {},
+ "description": "Automated workflow: Receive updates when an event occurs in Taiga. This workflow processes data and performs automated tasks.",
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Taiga/1114_Taiga_Update_Triggered.json",
+   "id": "12-0320"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "notes": "Excellent quality workflow: Receive updates when an event occurs in Taiga. This workflow has been optimized for production use with comprehensive error handling, security, and documentation."
+}

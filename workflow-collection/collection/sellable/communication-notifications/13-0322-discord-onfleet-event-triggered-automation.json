@@ -1,0 +1,56 @@
+{
+ "nodes": [
+  {
+   "name": "Discord",
+   "type": "n8n-nodes-base.discord",
+   "position": [
+    680,
+    300
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Onfleet Trigger",
+   "type": "n8n-nodes-base.onfleetTrigger",
+   "position": [
+    460,
+    300
+   ],
+   "parameters": {
+    "triggerOn": "taskStarted",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "onfleetApi": {
+     "name": "Onfleet API Key"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Onfleet Trigger": {
+   "main": [
+    [
+     {
+      "node": "Discord",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/communication/1528-send-a-discord-message-when-a-certain-onfleet-event-happens/workflow.json",
+   "id": "13-0322"
+  }
+ },
+ "settings": {},
+ "name": "Discord + Onfleet Event-Triggered Automation"
+}

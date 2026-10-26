@@ -1,0 +1,119 @@
+{
+ "nodes": [
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    430,
+    260
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  },
+  {
+   "name": "Taiga",
+   "type": "n8n-nodes-base.taiga",
+   "position": [
+    630,
+    260
+   ],
+   "parameters": {
+    "subject": "n8n-docs",
+    "projectId": 385605,
+    "additionalFields": {}
+   },
+   "credentials": {
+    "taigaCloudApi": {
+     "name": "taiga"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Taiga1",
+   "type": "n8n-nodes-base.taiga",
+   "position": [
+    830,
+    260
+   ],
+   "parameters": {
+    "issueId": "={{$node[\"Taiga\"].json[\"id\"]}}",
+    "operation": "update",
+    "projectId": "={{$node[\"Taiga\"].json[\"project\"]}}",
+    "updateFields": {
+     "description": "This ticket is for the documentation for the Taiga node"
+    }
+   },
+   "credentials": {
+    "taigaCloudApi": {
+     "name": "taiga"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Taiga2",
+   "type": "n8n-nodes-base.taiga",
+   "position": [
+    1030,
+    260
+   ],
+   "parameters": {
+    "issueId": "={{$node[\"Taiga\"].json[\"id\"]}}",
+    "operation": "get"
+   },
+   "credentials": {
+    "taigaCloudApi": {
+     "name": "taiga"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Taiga": {
+   "main": [
+    [
+     {
+      "node": "Taiga1",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Taiga1": {
+   "main": [
+    [
+     {
+      "node": "Taiga2",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "On clicking 'execute'": {
+   "main": [
+    [
+     {
+      "node": "Taiga",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "automation/685-create-update-and-get-an-issue-on-taiga/workflow.json",
+   "id": "12-0298"
+  }
+ },
+ "settings": {},
+ "name": "Taiga On-Demand Automation"
+}

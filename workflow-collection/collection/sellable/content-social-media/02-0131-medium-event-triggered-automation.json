@@ -1,0 +1,96 @@
+{
+ "nodes": [
+  {
+   "name": "Medium",
+   "type": "n8n-nodes-base.medium",
+   "position": [
+    650,
+    450
+   ],
+   "parameters": {
+    "title": "={{$json[\"body\"][\"entry\"][\"Title\"]}}",
+    "content": "={{$json[\"body\"][\"entry\"][\"PostContent\"]}}",
+    "contentFormat": "markdown",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "mediumApi": {
+     "name": "Medium Credentials"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "Webhook",
+   "type": "n8n-nodes-base.webhook",
+   "position": [
+    450,
+    300
+   ],
+   "parameters": {
+    "path": "",
+    "options": {},
+    "httpMethod": "POST",
+    "authentication": "headerAuth"
+   },
+   "credentials": {
+    "httpHeaderAuth": {
+     "name": "Strapi Webhook Credentials"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "HTTP Request",
+   "type": "n8n-nodes-base.httpRequest",
+   "position": [
+    650,
+    200
+   ],
+   "parameters": {
+    "url": "https://dev.to/api/articles",
+    "options": {},
+    "requestMethod": "POST",
+    "authentication": "headerAuth",
+    "jsonParameters": true,
+    "bodyParametersJson": "={\n\t\"article\": {\n\t\t\"title\": \"{{$json[\"body\"][\"entry\"][\"Title\"]}}\",\n\t\t\"published\": true,\n\t\t\"body_markdown\": \"{{$json[\"body\"][\"entry\"][\"PostContent\"]}}\",\n\t\t\"tags\":[\"{{$json[\"body\"][\"entry\"][\"Tag\"]}}\"]\n\t}\n}",
+    "headerParametersJson": "{\"Content-Type\": \"application/json\"}"
+   },
+   "credentials": {
+    "httpHeaderAuth": {
+     "name": "Dev.to Credentials"
+    }
+   },
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "Webhook": {
+   "main": [
+    [
+     {
+      "node": "HTTP Request",
+      "type": "main",
+      "index": 0
+     },
+     {
+      "node": "Medium",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "workflows/ai-agents/0952_HTTP_Medium_Automation_Webhook.json",
+   "id": "02-0131"
+  }
+ },
+ "settings": {},
+ "name": "Medium Event-Triggered Automation"
+}

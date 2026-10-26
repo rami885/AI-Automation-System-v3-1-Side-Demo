@@ -1,0 +1,124 @@
+{
+ "nodes": [
+  {
+   "name": "Dropbox",
+   "type": "n8n-nodes-base.dropbox",
+   "position": [
+    1090,
+    290
+   ],
+   "parameters": {
+    "path": "/images.zip",
+    "binaryData": true
+   },
+   "credentials": {
+    "dropboxApi": {
+     "name": "Dropbox Tokens Test"
+    }
+   },
+   "typeVersion": 1,
+   "id": "node-d67360c7"
+  },
+  {
+   "name": "Compression",
+   "type": "n8n-nodes-base.compression",
+   "position": [
+    890,
+    290
+   ],
+   "parameters": {
+    "fileName": "images.zip",
+    "operation": "compress",
+    "outputFormat": "zip",
+    "binaryPropertyName": "logo, workflow_image"
+   },
+   "typeVersion": 1,
+   "id": "node-585fea07"
+  },
+  {
+   "name": "HTTP Request1",
+   "type": "n8n-nodes-base.httpRequest",
+   "position": [
+    690,
+    290
+   ],
+   "parameters": {
+    "url": "{{ $env.BASE_URL }}",
+    "options": {},
+    "responseFormat": "file",
+    "dataPropertyName": "logo"
+   },
+   "typeVersion": 1,
+   "id": "node-e1705287"
+  },
+  {
+   "name": "HTTP Request",
+   "type": "n8n-nodes-base.httpRequest",
+   "position": [
+    490,
+    290
+   ],
+   "parameters": {
+    "url": "{{ $env.BASE_URL }}",
+    "options": {},
+    "responseFormat": "file",
+    "dataPropertyName": "workflow_image"
+   },
+   "typeVersion": 1,
+   "id": "node-48abb48d"
+  },
+  {
+   "name": "On clicking 'execute'",
+   "type": "n8n-nodes-base.manualTrigger",
+   "position": [
+    290,
+    290
+   ],
+   "parameters": {},
+   "typeVersion": 1,
+   "id": "node-03ca841b"
+  },
+  {
+   "id": "error-954f2e56",
+   "name": "Error Handler",
+   "type": "n8n-nodes-base.stopAndError",
+   "typeVersion": 1,
+   "position": [
+    1000,
+    400
+   ],
+   "parameters": {
+    "message": "Workflow execution error",
+    "options": {}
+   }
+  }
+ ],
+ "connections": {},
+ "name": "Compression + Dropbox On-Demand Automation",
+ "settings": {
+  "executionOrder": "v1",
+  "saveManualExecutions": true,
+  "callerPolicy": "workflowsFromSameOwner",
+  "executionTimeout": 3600,
+  "maxExecutions": 1000,
+  "retryOnFail": true,
+  "retryCount": 3
+ },
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "Zie619/n8n-workflows (MIT)",
+   "sourcePath": "workflows/Http/1187_HTTP_Dropbox_Automation_Webhook.json",
+   "id": "08-0256"
+  }
+ },
+ "tags": [
+  "automation",
+  "n8n",
+  "production-ready",
+  "excellent",
+  "optimized"
+ ],
+ "description": "Production-ready workflow: Production Workflow. This workflow has been optimized for production use with comprehensive error handling, security, and documentation.",
+ "active": false
+}

@@ -1,0 +1,123 @@
+{
+ "nodes": [
+  {
+   "name": "Github Trigger",
+   "type": "n8n-nodes-base.githubTrigger",
+   "position": [
+    450,
+    300
+   ],
+   "parameters": {
+    "owner": "n8n-io",
+    "events": [
+     "push",
+     "pull_request"
+    ],
+    "repository": "n8n",
+    "authentication": "oAuth2"
+   },
+   "credentials": {
+    "githubOAuth2Api": {
+     "name": "GitHub Credentials"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "IF",
+   "type": "n8n-nodes-base.if",
+   "position": [
+    650,
+    300
+   ],
+   "parameters": {
+    "conditions": {
+     "string": [
+      {
+       "value1": "={{$json[\"headers\"][\"x-github-event\"]}}",
+       "value2": "push"
+      },
+      {
+       "value1": "={{$json[\"body\"][\"action\"]}}",
+       "value2": "opened"
+      }
+     ]
+    },
+    "combineOperation": "any"
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "TravisCI",
+   "type": "n8n-nodes-base.travisCi",
+   "position": [
+    850,
+    200
+   ],
+   "parameters": {
+    "slug": "={{$json[\"body\"][\"repository\"][\"full_name\"]}}",
+    "branch": "=",
+    "operation": "trigger",
+    "additionalFields": {}
+   },
+   "credentials": {
+    "travisCiApi": {
+     "name": "Travis API"
+    }
+   },
+   "typeVersion": 1
+  },
+  {
+   "name": "NoOp",
+   "type": "n8n-nodes-base.noOp",
+   "position": [
+    850,
+    400
+   ],
+   "parameters": {},
+   "typeVersion": 1
+  }
+ ],
+ "connections": {
+  "IF": {
+   "main": [
+    [
+     {
+      "node": "TravisCI",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "NoOp",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Github Trigger": {
+   "main": [
+    [
+     {
+      "node": "IF",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "active": false,
+ "meta": {
+  "templateCredsSetupCompleted": false,
+  "collectionProvenance": {
+   "source": "oxbshw/ultimate-n8n-ai-workflows (MIT)",
+   "sourcePath": "New Workflow/1132-trigger-a-build-in-travis-ci-when-code-changes-are-push-to-a-github-repo/workflow.json",
+   "id": "09-0143"
+  }
+ },
+ "settings": {},
+ "name": "GitHub + Travisci Event-Triggered Automation"
+}
